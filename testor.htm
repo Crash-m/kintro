@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" type="text/css" media="screen" href="kstyle.css" />
+<link rel="stylesheet" type="text/css" media="print" href="kprintstyle.css" />
+<style type="text/css">
+
+div.kbd p {
+    margin: 10px;
+}
+
+.box {
+    font-family: UnDotum;
+    font-size: 125%;
+    border: 1px solid black;
+    padding: 2px;
+    cursor: default;
+}
+</style>
+<script type="text/javascript" src="writing.js">
+</script>
+</head>
+<body>
+
+<canvas id="canvas" width="100" height="100"></canvas>
+
+<script type="text/javascript">
+var ctx = document.getElementById("canvas").getContext("2d");
+drawChar(ctx, 13);
+</script>
+
+</body>
+</html>

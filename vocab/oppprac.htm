@@ -1,0 +1,326 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" type="text/css" media="screen" href="../kstyle.css" />
+<link rel="stylesheet" type="text/css" media="print" href="../kprintstyle.css" />
+<style type="text/css">
+
+div.kbd p {
+    margin: 10px;
+}
+
+.box {
+    font-family: UnDotum;
+    font-size: 125%;
+    border: 1px solid black;
+    padding: 2px;
+    cursor: default;
+}
+</style>
+<script type="text/javascript" src="../kinput.js"></script>
+<script type="text/javascript" src="../driver.js"></script>
+<script type="text/javascript">
+// <![CDATA[
+
+var correctEnglish, correctKorean;
+
+/*
+    These are adjectives in English, but verbs in Korean.
+*/
+var verbList = [
+    ["high", "높습니디"], /* nop' */
+    ["low", "낮습니디"], /* nach */
+    ["near", "가깝습니디"], /* ka kkap */
+    ["far", "멀습니다"], /* meor */
+    ["deep", "깊습니디"], /* kip' */
+    ["shallow", "얕습니디"], /* @yat' */
+    ["long", "길습니디"], /* kir */
+    ["short", "짧습니디"], /* ccarp */
+    ["heavy", "무겁습니디"], /* mu keop */
+    ["light (weight)", "가볍습니디"], /* ka pyeop */
+    ["big", "큽니다"], /* k'eu */
+    ["small", "작습니디"], /* chak */
+    ["wide", "넓습니디"], /* neorp */
+    ["narrow", "좁습니디"], /* chop */
+    ["thick (around)", "굵습니디"], /* kurk */
+    ["thin (around)", "가늘습니디"], /* ka neur */
+    ["thick (through)", "두껍습니디"], /* tu keeop */
+    ["thin (through)", "얇습니디"], /* @yarp */
+    ["bright", "밝습니디"], /* park */
+    ["dark", "어둡습니디"] /* eo tup */
+];
+
+/*
+    English word, korean translation (plus , valid adjectives
+*/
+var nounList = [
+    ["mountain", "산이", [0]],
+    ["temperature", "온도가",[0, 1]],
+    ["sky", "하늘이", [0]],
+    ["house", "집이", [2, 3, 10, 11]],
+    ["bank", "은행이", [2, 3, 10, 11]],
+    ["dormitory", "기숙사가", [2, 3, 10, 11]],
+    ["river", "강이",[4, 5]],
+    ["sea", "바다가", [4, 5, 12]],
+    ["thought", "생각이",[4, 5]],
+    ["hair", "머리가",[6, 7]],
+    ["skirt", "치마가", [6, 7, 16, 17]],
+    ["movie", "영화가", [6, 7]],
+    ["bag", "가방이", [8, 9, 10, 11]],
+    ["mouth", "입이", [10, 11]],
+    ["voice", "목소리가", [10, 11]],
+    ["height", "키가", [10, 11]],
+    ["road", "길이", [6, 7, 12, 13]],
+    ["boarding room", "하숙방이", [12, 13]],
+    ["garden", "마당이", [12, 13]],
+    ["playground", "운동장이", [12, 13]],
+    ["cylinder", "원동이", [14, 15]],
+    ["finger", "손가락이", [14, 15]],
+    ["ankle", "발목이", [14, 15]],
+    ["waist", "허리가", [14, 15]],
+    ["book", "책이", [16, 17]],
+    ["dictionary", "사전이", [16, 17]],
+    ["clothing", "옷이", [16, 17]],
+    ["blanket", "이불이", [16, 17]],
+    ["wall", "벽이", [16, 17, 0, 1]],
+    ["color", "색깔이", [18, 19]],
+    ["light", "불빛이", [18, 19]],
+    ["(person's) personality", "성격이", [18, 19]]
+];
+
+  
+function makeKorean(nounNumber, verbNumber, showAnswer)
+{
+    return (nounList[nounNumber][1] + ' ' + verbList[verbNumber][1]);
+}
+
+function makeEnglish(nounNumber, verbNumber)
+{
+    noun = nounList[nounNumber][0];
+    verb = verbList[verbNumber][0];
+
+    return  ("The " + noun + " is " + verb + ".");
+}
+
+function shortcut(jamoStr)
+{
+    for (var i = 0; i < jamoStr.length; i++)
+    {
+        addLetter(jamoStr[i]);
+    }
+}
+
+function showProblem()
+{
+    var theNoun;
+    var theVerb;
+    
+    resetInput();
+    setText("kCorrect", "\u00a0");
+    setText("feedback", "\u00a0");
+    theNoun = order[problemNumber];
+    possibleVerbs = nounList[theNoun][2]; 
+    theVerb = possibleVerbs[Math.round(Math.random() * (possibleVerbs.length - 1))];
+    correctKorean = makeKorean(theNoun, theVerb);
+    setText("english",  makeEnglish(theNoun, theVerb));
+    document.getElementById("check").disabled = false;
+    document.getElementById("show").dsisabled = false;
+}
+
+function judgeCorrect()
+{
+    var student = document.getElementById("korean").innerText.replace(/\s/g, '');
+    var correct = correctKorean.replace(/\s/g, '');
+    return (student == correct);
+}
+
+function giveFeedback()
+{
+
+    if (correctAnswer)
+    {
+        setText("feedback", randomPositiveFeedback());
+        nTries++;
+    }
+    else
+    {
+        if (nTries <= maxTries)
+        {
+            setText("feedback", "Sorry, that's not it.");
+        }
+        else
+        {
+            setText("feedback", "Click “Show Answer” to see the right answer.");
+        }
+        nTries++;
+    }
+}
+
+function showAnswer()
+{
+    setText("kCorrect", correctKorean);
+    document.getElementById("check").disabled = true;
+    document.getElementById("show").disabled = true;
+}
+
+function nextProblem()
+{
+    problemNumber++;
+    if (problemNumber >= maxProblem)
+    {
+        top.location.href = "vocab.htm";
+    }
+    else
+    {
+        showProblem();
+    }
+}
+function initialize() {
+    maxProblem = nounList.length;
+    maxTries = 3;
+    setupDriver();
+}
+
+// ]]>
+</script>
+<title>Practice with Opposites</title>
+</head>
+
+<body onload="initInput('', 'korean', 12); initialize();">
+<h2>Practice with Opposites</h2>
+<noscript>
+<hr />
+<p>You must have Javascript enabled for this page to work properly.</p>
+<hr />
+</noscript>
+
+<p>
+Translate the English to Korean: <b><span id="english">&nbsp;</span></b>
+</p>
+
+
+<p>
+&#160; <span id="korean" class="k">&#160;</span>
+</p>
+
+<p>
+&#160; <span id="kCorrect" class="k">&#160;</span>
+</p>
+
+<div class="kbd">
+<p>
+<span class="box" onclick="addLetter('ㄱ')">ㄱ</span><span
+    class="box" onclick="addLetter('ㄴ')">ㄴ</span><span
+    class="box" onclick="addLetter('ㄷ')">ㄷ</span><span
+    class="box" onclick="addLetter('ㄹ')">ㄹ</span><span
+    class="box" onclick="addLetter('ㅁ')">ㅁ</span><span
+    class="box" onclick="addLetter('ㅂ')">ㅂ</span><span
+    class="box" onclick="addLetter('ㅅ')">ㅅ</span><span
+    class="box" onclick="addLetter('ㅇ')">ㅇ</span><span
+    class="box" onclick="addLetter('ㅈ')">ㅈ</span><span
+    class="box" onclick="addLetter('ㅊ')">ㅊ</span><span
+    class="box" onclick="addLetter('ㅋ')">ㅋ</span><span
+    class="box" onclick="addLetter('ㅌ')">ㅌ</span><span
+    class="box" onclick="addLetter('ㅍ')">ㅍ</span><span
+    class="box" onclick="addLetter('ㅎ')">ㅎ</span><span
+    class="box" onclick="addLetter('ㄲ')">ㄲ</span><span
+    class="box" onclick="addLetter('ㄸ')">ㄸ</span><span
+    class="box" onclick="addLetter('ㅃ')">ㅃ</span><span
+    class="box" onclick="addLetter('ㅆ')">ㅆ</span><span
+    class="box" onclick="addLetter('ㅉ')">ㅉ</span>
+    </p>
+    
+    <p>
+    <span class="box" onclick="addLetter('ㄳ')">ㄳ</span><span
+    class="box" onclick="addLetter('ㄵ')">ㄵ</span><span
+    class="box" onclick="addLetter('ㄶ')">ㄶ</span><span
+    class="box" onclick="addLetter('ㄺ')">ㄺ</span><span
+    class="box" onclick="addLetter('ㄻ')">ㄻ</span><span
+    class="box" onclick="addLetter('ㄼ')">ㄼ</span><span
+    class="box" onclick="addLetter('ㄽ')">ㄽ</span><span
+    class="box" onclick="addLetter('ㄾ')">ㄾ</span><span
+    class="box" onclick="addLetter('ㄿ')">ㄿ</span><span
+    class="box" onclick="addLetter('ㅀ')">ㅀ</span><span
+    class="box" onclick="addLetter('ㅄ')">ㅄ</span>
+    &#160; &#160; <span
+    class="box" onclick="backspace()">&#8592;</span>
+    &#160;
+    <span class="box" style="font-family: sans-serif;"
+        onclick="forceSyllableEnd()"><span style="font-size: small">End syll</span></span>
+    <span class="box" style="font-family: sans-serif;"
+        onclick="addLetter(' ')"><span style="font-size:small">Space bar</span></span>
+    <span class="box" style="font-family: sans-serif;"
+        onclick="resetInput()"><span style="font-size: small">Reset</span></span>
+    </p>
+    
+    
+    <p>
+    <span class="box" onclick="addLetter('ㅏ')">ㅏ</span><span
+    class="box" onclick="addLetter('ㅑ')">ㅑ</span><span
+    class="box" onclick="addLetter('ㅓ')">ㅓ</span><span
+    class="box" onclick="addLetter('ㅕ')">ㅕ</span><span
+    class="box" onclick="addLetter('ㅗ')">ㅗ</span><span
+    class="box" onclick="addLetter('ㅛ')">ㅛ</span><span
+    class="box" onclick="addLetter('ㅜ')">ㅜ</span><span
+    class="box" onclick="addLetter('ㅠ')">ㅠ</span><span
+    class="box" onclick="addLetter('ㅡ')">ㅡ</span><span
+    class="box" onclick="addLetter('ㅣ')">ㅣ</span><span
+    class="box" onclick="addLetter('ㅐ')">ㅐ</span><span
+    class="box" onclick="addLetter('ㅒ')">ㅒ</span><span
+    class="box" onclick="addLetter('ㅔ')">ㅔ</span><span
+    class="box" onclick="addLetter('ㅖ')">ㅖ</span><span
+    class="box" onclick="addLetter('ㅘ')">ㅘ</span><span
+    class="box" onclick="addLetter('ㅙ')">ㅙ</span><span
+    class="box" onclick="addLetter('ㅚ')">ㅚ</span><span
+    class="box" onclick="addLetter('ㅝ')">ㅝ</span><span
+    class="box" onclick="addLetter('ㅞ')">ㅞ</span><span
+    class="box" onclick="addLetter('ㅟ')">ㅟ</span><span
+    class="box" onclick="addLetter('ㅢ')">ㅢ</span>
+    </p>
+
+    <p>
+    Quick entry for endings:
+    <span class="box" onclick="shortcut('ㅇㅣ')">&#8211;이</span>
+    <span class="box" onclick="shortcut('ㄱㅏ')">&#8211;가</span>
+    <span class="box" onclick="shortcut('ㅂㄴㅣㄷㅏ')">&#8211;&#x115f;&#x1160;&#x11b8;니다</span>
+    <span class="box" onclick="shortcut('ㅅㅡㅂㄴㅣㄷㅏ')">&#8211;습니다</span>
+    </p>
+</div>
+
+<p id="feedback">&nbsp;</p>
+
+<p>
+<input type="button" value="Next Problem" onclick = "nextProblem();" />
+<input type="button" id="check" value="Check answer" onclick = "checkAnswer();" />
+<input type="button" id="show" value="Show answer" onclick = "showAnswer();" />
+<input type="button" value="Clear" onclick="resetInput(); resetCorrectArea();" />
+</p>
+
+<p>
+<a href="../kbdhow2.htm">Find out how to enter Korean words</a>
+</p>
+</form>
+
+
+<!-- navigation -->
+<div id="bottom">
+
+<div id="left">
+<a href="opposite.htm"><img src="../pics/l_arrow.png" width="16" height="11" class="noborder" alt="(back)" />Opposites</a>
+</div>
+
+<div id="middle">
+<a href="vocab.htm"><img src="../pics/up_arrow.png" class="noborder" 
+    width="26" height="11" alt="(Menu)" />Vocabulary Index</a>
+</div>
+
+<div id="right">
+</div>
+
+</div>
+<!-- end navigation -->
+
+</body>
+</html>

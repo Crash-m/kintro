@@ -1,0 +1,225 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" type="text/css" media="screen" href="../kstyle.css" />
+<link rel="stylesheet" type="text/css" media="print" href="../kprintstyle.css" />
+<script type="text/javascript" src="../driver.js"></script>
+<script type="text/javascript">
+// <![CDATA[
+
+var korList = [
+        "가르치다", "배우다", "공부하다", "외우다", "읽다", "쓰다",
+        "가다", "오다", "타다", "기디리다",
+        "이다", "있다", "아니다", "없다",
+        "사다", "먹다", "마시다", "자다",
+        "입다", "보다", "주다", "하다"
+    ];
+    
+var engList = [
+        "to teach",
+        "to learn",
+        "to study",
+        "to memorize",
+        "to read", 
+        "to write",
+        "to go",
+        "to come",
+        "to ride",
+        "to wait",
+        "to be (equivalent to)", 
+        "to exist",
+        "to not be (equivalent to)",
+        "to not exist",
+        "to buy",
+        "to eat",
+        "to drink",
+        "to sleep",
+        "to wear",
+        "to see",
+        "to give", 
+        "to do"
+    ];
+
+var probType;
+var nextPageHref;
+var alreadyAnswered;
+var correctChoice;
+var userAnswer;
+var subOrder;
+
+function setup()
+{
+    var pType = parseInt(location.search.substring(3));
+    nextPageHref = "vprac0.htm";
+    maxTries = 1;
+    maxProblem = korList.length;
+    score = 0;
+    nTries = 0;
+    problemNumber = 0;
+    nextPageHref = "vprac0.htm";
+    setText("maxProb", maxProblem);
+
+    probType = [];
+    console.log("Search:", location.search, location.search.substring(3), pType);
+
+    if (pType < 2)
+    {
+        for (i = 0; i < maxProblem; i++)
+        {
+            probType.push(pType);
+        }
+    }
+    else
+    {
+        for (i = 0; i < maxProblem; i++)
+        {
+            probType.push(i % 2);
+        }
+        shuffle(probType, 0, maxProblem);
+    }
+    console.log("Probtype array:", probType);
+    setupDriver();
+}
+
+function showProblem()
+{
+    var n = order[problemNumber];
+    var i;
+    
+    console.log("Show", problemNumber, "order", n, "type", probType[n]);
+    
+    setText("feedback", "\u00a0");
+    setText("probNum", problemNumber + 1 );
+    alreadyAnswered = false;
+    
+    subOrder = [];
+    subOrder[0] = n;
+    for (i=0; i<maxProblem; i++)
+    {
+        if (i != n)
+        {
+            subOrder.push(i);
+        }
+    }
+    shuffle( subOrder, 1, maxProblem-1);
+    shuffle( subOrder, 0, 3 );
+    
+    i = 0;
+    while (i < 3 && subOrder[i] != order[problemNumber]) { i++; }
+    correctChoice = i;
+
+    if (probType[n] == 0)
+    {
+        setText("question", korList[n]);
+        for (i=0; i<3; i++)
+        {
+            setText("word" + i, engList[subOrder[i]]);
+        }
+    }
+    else if (probType[n] == 1)
+    {
+        setText("question", engList[n]);
+        for (i = 0; i < 3; i++)
+        {
+            setText("word" + i, korList[subOrder[i]]);
+        }
+    }
+}
+
+function judgeCorrect()
+{
+    return (userAnswer == correctChoice);
+}
+
+
+function giveFeedback()
+{
+    var i;
+    var doc;
+    var feedback;
+
+    if (alreadyAnswered)
+    {
+        setText("feedback",
+            "You already answered this question.");
+    }
+    else
+    {
+        alreadyAnswered = true;
+        if (correctAnswer)
+        {
+            setText("feedback", randomPositiveFeedback());
+            score++;
+            setText("score", score);
+        }
+        else
+        {
+            setText("feedback",
+                "The answer is " +
+                "ABCD"[correctChoice] + ".");
+        }
+    }
+}
+
+
+function nextProblem()
+{
+    problemNumber++;
+    if (problemNumber == maxProblem)
+    {
+        top.location.href = nextPageHref;
+    }
+    else
+    {
+        showProblem();
+    }
+}
+
+// ]]>
+</script>
+<title>Verb Practice 1</title>
+</head>
+
+<body onload="setup();">
+<noscript>
+<hr />
+<p>You must have Javascript enabled for this page to work properly.</p>
+<hr />
+</noscript>
+
+<p id="question" class="k">&#160;</p>
+
+<div>
+<input type="button" value=" A " onclick="userAnswer = 0; checkAnswer()" />
+<span id="word0" class="k">&#160;</span>
+</div>
+
+<div>
+<input type="button" value=" B " onclick="userAnswer = 1; checkAnswer()" />
+<span id="word1" class="k">&#160;</span>
+</div>
+
+<div>
+<input type="button" value=" C " onclick="userAnswer = 2; checkAnswer()" />
+<span id="word2" class="k">&#160;</span>
+</div>
+
+<p>Click the button next to the correct choice above.</p>
+
+<p id="feedback">&#160;</p>
+<p>
+Problem <span id="probNum">1</span> of
+    <span id="maxProb">0</span>.
+Your score: <span id="score">0</span>.
+</p>
+<p>
+<input type="button" id="next" value="Next Problem"
+    onclick="nextProblem()" />
+<input type="button" id="back" value="Vocabulary Index"
+    onclick="top.location.href='vocab.htm'" />
+</p>
+</form>
+</body>
+</html>

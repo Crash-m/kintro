@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" type="text/css" media="screen" href="../kstyle.css" />
+<link rel="stylesheet" type="text/css" media="print" href="../kprintstyle.css" />
+<title>Verbs of Everyday Activities</title>
+<script type="text/javascript" src="../dhtml.js"></script>
+<script type="text/javascript">
+// <![CDATA[
+var engWord = new Array
+(
+    "to buy",
+    "to eat",
+    "to drink",
+    "to sleep",
+    "to wear",
+    "to see",
+    "to give", 
+    "to do"
+);
+
+function setText(id, txt)
+{
+    document.getElementById(id).innerText = txt;
+}
+
+function display(n)
+{
+    setText("english", engWord[n]);
+}
+
+function undisplay()
+{
+    setText("english", "\u00a0");
+}
+// ]]>
+</script>
+
+</head>
+
+<body>
+<h1 class="center">Verbs of Everyday Activities</h1>
+<noscript>
+<hr />
+<p>You must have Javascript enabled for this page to work properly.</p>
+<hr />
+</noscript>
+
+<p>
+Move your mouse over a Korean word to see its translation below.
+</p>
+
+<table class="noborder" cellspacing="15">
+<tr>
+<td>
+<span class="k" onmouseover="display(0);"
+    onmouseout="undisplay();">사다</span>
+<br />
+<span class="k" onmouseover="display(1);"
+    onmouseout="undisplay();">먹다</span>
+<br />
+<span class="k" onmouseover="display(2);"
+    onmouseout="undisplay();">마시다</span>
+<br />
+<span class="k" onmouseover="display(3);"
+    onmouseout="undisplay();">자다</span>
+</td>
+
+<td>
+<span class="k" onmouseover="display(4);"
+    onmouseout="undisplay();">입다</span>
+<br />
+<span class="k" onmouseover="display(5);"
+    onmouseout="undisplay();">보다</span>
+<br />
+<span class="k" onmouseover="display(6);"
+    onmouseout="undisplay();">주다</span>
+<br />
+<span class="k" onmouseover="display(7);"
+    onmouseout="undisplay();">하다</span>
+</td>
+</tr>
+</table>
+
+
+<p class="bordered padded">Translation:
+<span id="english">&nbsp;</span>
+</p>
+
+<!-- navigation -->
+<div id="bottom">
+
+<div id="left">
+<a href="verb2.htm"><img src="../pics/l_arrow.png" width="16" height="11" class="noborder" alt="(back)" />Motion and Existence</a>
+</div>
+
+<div id="middle">
+<a href="vocab.htm"><img src="../pics/up_arrow.png" class="noborder" 
+    width="26" height="11" alt="(Menu)" />Vocabulary Index</a>
+</div>
+
+<div id="right">
+<a href="vprac0.htm">Verb Practice<img src="../pics/r_arrow.png" class="noborder" width="16" height="11" alt="(next)" /></a>
+</div>
+
+</div>
+<!-- end navigation -->
+</body>
+</html>

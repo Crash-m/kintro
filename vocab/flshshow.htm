@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" type="text/css" media="screen" href="../kstyle.css" />
+<link rel="stylesheet" type="text/css" media="print" href="../kprintstyle.css" />
+<title>Flash Cards</title>
+<script type="text/javascript" src="flshlist.js"></script>
+<script type="text/javascript">
+// <![CDATA[
+var maxProblem;
+
+function makeRow(kor, eng) {
+    var row = document.createElement("tr");
+    var cell1 = document.createElement("td");
+    var cell2 = document.createElement("td");
+    cell1.appendChild(document.createTextNode(kor))
+    cell1.setAttribute("class", "k");
+    cell2.appendChild(document.createTextNode(eng));
+    row.appendChild(cell1);
+    row.appendChild(cell2);
+    return row;
+}
+    
+
+function showData()
+{
+    var i, j, start, end, perPage;
+    var pageNum;
+    var prev;
+    var next;
+    var table = document.getElementById("vocabTable");
+    
+    pageNum = top.location.search.charAt(1);
+    
+    if ((!pageNum) || (pageNum == ''))
+    {
+        pageNum = "1";
+    }
+    
+    pageNum = parseInt(pageNum);
+    perPage = Math.floor( korean.length / 3 );
+    start = (pageNum - 1) * perPage;
+    end = Math.min(start + perPage, korean.length);
+    
+    document.getElementById("sectionNumber").innerText = pageNum + 1;
+    
+    for (i=start; i < end; i++)
+    {
+        var row = makeRow(korean[i], english[i]);
+        table.appendChild(row);
+    }
+    
+    prev = document.getElementById("prev");
+    next = document.getElementById("next");
+    
+    prev.style.display = (pageNum == 1) ? "none" : "inline";
+    next.style.display = (pageNum == 3) ? "none" : "inline";
+        
+    prev.setAttribute('href', 'flshshow.htm?' + (pageNum - 1));
+    next.setAttribute('href', 'flshshow.htm?' + (pageNum + 1));
+}
+// ]]>      
+</script>
+</head>
+
+<body onload="showData()">
+<p><a href="flshintr.htm">Back to Flash Card choice page</a></p>
+
+<h1>Vocabulary Items (section <span id="sectionNumber"></span>)</h1>
+
+<table class="bordered-table" id="vocabTable">
+</table>
+
+<p>
+<a id="prev" href="">&lt;&lt; Previous Section</a><br />
+<a id="next" href="">Next Section &gt;&gt;</a>
+</p>
+
+<p><a href="flshintr.htm">Back to Flash Card choice page</a></p>
+</body>
+</html>

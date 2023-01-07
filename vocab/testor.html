@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1" />
+<link rel="stylesheet" type="text/css" href="../kstyle.css" />
+<script type="text/javascript">
+// <![CDATA[
+var beginName = new Array(
+	"k", "kk", "n", "t", "tt", "r", "m", "p", "pp", "s",
+	"ss", "", "ch", "cch", "ch'", "k'", "t'", "p'", "h"
+);
+
+var vowelName = new Array(
+	"a", "ae", "ya", "yae", "eo", "e", "yeo", "ye", "o", "wa", "wae",
+	"oe", "yo", "u", "weo", "we", "wi", "yu", "eu", "ui", "i"
+);
+
+var endName = new Array(
+	"", "k", "kk", "ks", "n", "nch", "nh", "t", "r", "rk", "rm", "rp",
+	"rs", "rt'", "rp'", "rh", "m", "p", "ps", "s", "ss", "ng",
+	"ch", "ch'", "k'", "t'", "p'", "h"
+);
+
+function test( )
+{
+	var calc;
+	var begin, middle, end;
+	var n = document.theForm.syll.value;
+	n = parseInt(n);
+	
+	calc = n - 1;
+	
+		begin = Math.floor( calc / 588 );
+		middle = Math.floor ( (calc % 588) / 28 );
+		end = calc % 28;
+
+	document.theForm.result.value =
+		beginName[begin] + vowelName[middle] + endName[end];
+}
+// ]]>
+</script>
+</head>
+
+<body>
+
+<form name="theForm" action="#">
+<p>
+Syllable # <input type="text" name="syll" />
+</p>
+<p>
+Romanized: <input type="text" name="result" />
+</p>
+<p>
+<input type="button" onclick="test();" value="Romanize" />
+</p>
+</form>
+</body>
+</html>
+
+		

@@ -1,0 +1,135 @@
+@font-face {
+  font-family: "UnDotum";
+  src: local("UnDotum"),
+       url("UnDotum.woff"),
+       url("UnDotum.eot"),
+       url("UnDotum.ttf");
+}
+body {
+    padding-bottom: 1.5em;
+    margin-bottom: 0.5em;
+    background-color: #ffffff;
+    font-family: times new roman, times, serif;
+}
+
+.k {
+    font-family: UnDotum;
+    font-size: 200%;
+}
+
+button .k {
+    background-color: #fff;
+    border: 1px solid gray;
+    padding: 2px;
+}
+
+#bottom {
+    display: none;
+    position: relative;
+    /* border-top: 1px solid gray; */
+    padding-top: 2px;
+    font-size: 80%;
+}
+
+#left {
+    padding-top: 0.5em;
+    width: 33%;
+    float: left;
+}
+
+#middle {
+    padding-top: 0.5em;
+    float: left;
+    text-align: center;
+    width: 33%;
+}
+
+#right {
+    padding-top: 0.5em;
+    float: left;
+    text-align: right;
+    width: 33%;
+}
+
+.noborder {
+    border-style: none;
+}
+
+.bordered { border: 1px solid; margin: 2px; }
+.padded { padding: 0.5em; }
+.border1 { border: 1px solid; }
+.dblborder { border: 2px solid; margin: 2px; }
+
+.indented { margin-left: 1em; }
+
+.centered { text-align: center; }
+
+.vmiddle { vertical-align: middle; }
+
+.ul,.underlined { text-decoration: underline; }
+
+.centered-table {
+   margin-left: auto;
+   margin-right: auto;
+}
+
+.floatleft {
+    float: left;
+    margin-right: 0.5em;
+}
+
+.floatright {
+    float: right;
+    margin-left: 0.5em;
+}
+.clearleft { clear: left; }
+.clearright { clear: right; }
+
+.mono { font-family: courier new, courier, monospace; }
+
+.attention { color: red; }
+
+.highlight { background-color: yellow; }
+
+.blockquote {
+    margin: 0.5em 1em 0.5em 1em;
+}
+
+.bottomspace {
+    padding-bottom: 0.5em;
+}
+
+.nobottom {
+    margin-bottom: 0;
+}
+
+.topspace {
+    padding-top: 0.5em;
+}
+
+.small {
+    font-size: 80%;
+}
+
+.big {
+    font-size: 125%;
+}
+
+.spaceright {
+    padding-right: 15px;
+}
+
+.newbrowser {
+    display: none;
+}
+
+table.bordered-table {
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+table.bordered-table td,
+table.bordered-table th {
+    border: 1px solid black;
+    padding: 0.25em;
+}

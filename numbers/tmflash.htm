@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" type="text/css" media="screen" href="../kstyle.css" />
+<link rel="stylesheet" type="text/css" media="print" href="../kprintstyle.css" />
+
+<script type="text/javascript" src="numutil.js"></script>
+<script type="text/javascript">
+// <![CDATA[
+var order, maxProblem;
+var problemNumber;
+var revealed;
+var probType;
+var theHours, theMinutes;
+
+function showNumber(whichDiv)
+{
+    var d = document.getElementById(whichDiv);
+    var str = theHours + ":";
+    if (theMinutes < 10) { str += "0"; }
+    str += theMinutes;
+    d.innerText = str;
+}
+
+function showKorean(whichDiv)
+{
+    var pic;
+    var d;
+    var i, digit, pten, n;
+    var result = "";
+    var minResult = "";
+
+    d = document.getElementById(whichDiv);
+    // show the pure korean hour
+    if (theHours >= 10)
+    {
+        result = tensPlace[Math.floor(theHours/10)];
+    }
+    if (theHours % 10 != 0)
+    {
+        result += hourOnesPlace[theHours % 10];
+    }
+    result +=  "시 "
+    
+    // now the minutes
+    pten = 10;
+    power = 1;
+    n = theMinutes;
+    minResult = "";
+    while (power >= 0)
+    {
+        digit = Math.floor(n / pten);
+        if (digit != 0)
+        {
+            if (digit > 1)
+            {
+                minResult = minResult + sinoOnes[digit];
+            }
+            if ((power > 0) || (power == 0 && digit == 1))
+            {
+                minResult = minResult + powerStr[power];
+            }
+        }
+        power--;
+        n %= pten;
+        pten /= 10;
+    }
+    if (minResult != '') {
+        minResult += "분";
+    }
+    result = result + minResult;
+    d.innerText = result;
+}
+
+function goProblem()
+{
+    var n;
+    
+    revealed = false;
+    theHours = Math.floor(Math.random() * 12) + 1;
+    theMinutes = Math.floor(Math.random() * 60);
+    probType = (Math.floor(Math.random() * 10) >= 6) ? 1 : 0;
+    if (probType == 0)
+    {
+        showNumber("question");
+    }
+    else
+    {
+        showKorean("question");
+    }
+    setText("card", problemNumber + 1);
+    setText("answer", "\u00a0");
+    if (problemNumber == maxProblem - 1)
+    {
+        document.getElementById("next").disabled = true;
+    }
+}
+
+function showAnswer()
+{
+
+    if (revealed)
+    {
+        return;
+    }
+
+    if (probType == 0)
+    {
+        showKorean("answer");
+    }
+    else
+    {
+        showNumber("answer");
+    }
+    revealed = true;
+}
+
+function initialize()
+{
+    var i;
+
+    problemNumber = 0;
+    maxProblem = 20;
+    nextPageHref = "numindex.htm"
+    setText("max", maxProblem);
+    goProblem();
+}
+// ]]>
+</script>
+<title>Telling Time Flash Cards</title>
+</head>
+
+<body onload="setup();">
+<div style="width: 50%; margin-left: auto; margin-right: auto;
+    padding:0.5em; border: 1px solid black">
+<div id="question" class="centered k">&nbsp;</div>
+
+<div id="answer" class="centered k">&nbsp;</div>
+<div>Card <span id="card">&#160;</span> of <span id="max">&#160;</span></div>
+</div>
+
+<noscript>
+<hr />
+<p>You must have Javascript enabled for this page to work properly.</p>
+<hr />
+</noscript>
+
+<form id="infoForm" action="#">
+<p>
+See if you know what time it is in Korean.
+</p>
+<p>
+<input type="button" id="show" value="Show Answer"
+    onclick="showAnswer()" />
+<input type="button" id="next" value="Next Problem"
+    onclick="nextProblem()" />
+<input type="button" id="index" value="Back to Index"
+    onclick="top.location.href='numindex.htm'" />
+</p>
+</form>
+</body>
+</html>

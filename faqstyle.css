@@ -1,0 +1,15 @@
+.question {
+    font-size: 125%;
+    font-weight: bold;
+    background-color: #333399;
+    color: white;
+    padding: 0.2em;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.answer{
+    margin-left: 1em;
+    padding: 0.2em;
+    background-color: #ffffcc;
+}

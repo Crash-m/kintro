@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" type="text/css" media="screen" href="../kstyle.css" />
+<link rel="stylesheet" type="text/css" media="print" href="../kprintstyle.css" />
+<script type="text/javascript" src="../dhtml.js"></script>
+<script type="text/javascript" src="numutil.js"></script>
+<script type="text/javascript">
+// <![CDATA[
+var klist, rlist, elist;
+var order, maxProblem;
+var problemNumber;
+var nTries;
+var score;
+var congrats;
+var nextPageHref = "numindex.htm";
+var answeredOK;
+
+function showKorean(n)
+{
+    var d;
+    var tens, ones;
+
+    d = document.getElementById("question");
+    
+    tens = Math.floor(n / 10);
+    ones = n % 10;
+    
+    d.innerText = ((tens != 0) ? tensPlace[tens] : "") +
+        ((ones != 0) ? onesPlace[ones] : "");
+}
+
+function goProblem()
+{
+    var n;
+    var doc;
+    
+    answeredOK = false;nTries = 0;
+    n = order[problemNumber];
+    setText("feedback", "\u00a0");
+    setText("probNum", problemNumber + 1);
+    setText("maxProb", maxProblem);
+    showKorean(n);
+    document.getElementById("input").value = "";
+    document.getElementById("input").focus();
+}
+
+
+function checkAnswer()
+{
+    var student;
+    var correct;
+    var studentCanonical;
+    var correctCanonical;
+    var i;
+    var c;
+    var input;
+    
+    if (answeredOK || (nTries >= 3))
+    {
+        return;
+    }
+
+    student = document.getElementById("input").value;
+    studentCanonical = student.replace(/\D/g, '');
+
+    if ((studentCanonical) != "" && (parseInt(studentCanonical) == order[problemNumber]))
+    {
+        score++;
+        setText("score", score);
+        setText("feedback", 
+            congrats[Math.floor(Math.random() * congrats.length)]);
+        answeredOK = true;
+    }
+    else if (studentCanonical != "")
+    {
+        nTries++;
+        if (nTries == 3)
+        {
+            setText("feedback",
+                "The correct answer is " + order[problemNumber] + ".");
+            input.value = "";
+        }
+        else
+        {
+            setText("feedback",
+                "Sorry, \"" + student + "\" isn't right.");
+            input.value = "";
+            input.focus();
+        }
+    }
+    else {
+        setText("feedback", "Please enter a number.");
+    }
+
+}
+
+function initialize()
+{
+    var i;
+
+    maxProblem = 20;
+    
+    order = new Array(99);
+    for (i=0; i<99; i++)
+    {
+        order[i] = i+1;
+    }
+    shuffle(order, 0, 99);
+    problemNumber = 0;
+    goProblem();
+}
+// ]]>
+</script>
+<title>Pure Korean Numbers to Digits</title>
+</head>
+
+<body onload="setup();">
+<div id="question" class="centered k">&nbsp;</div>
+
+<noscript>
+<hr />
+<p>You must have Javascript enabled for this page to work properly.</p>
+<hr />
+</noscript>
+<p>Enter the digits for the Pure Korean number:
+<input type="text" id="input" size="15" />
+<input type="button" id="check" value="Check Answer"
+    onclick="checkAnswer()" />
+</p>
+
+</form>
+
+<p id="feedback">&nbsp;</p>
+
+<p>
+Problem <span id="probNum">1</span> of
+    <span id="maxProb">0</span>.
+Your score: <span id="score">0</span>
+</p>
+
+<form id="infoForm" action="#">
+<p>
+<input type="button" name="next" value="Next Problem"
+    onclick="nextProblem()" />
+<input type="button" name="index" value="Back to Index"
+    onclick="top.location.href='numindex.htm'" />
+</p>
+</form>
+</body>
+</html>

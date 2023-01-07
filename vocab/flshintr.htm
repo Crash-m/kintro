@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" type="text/css" media="screen" href="../kstyle.css" />
+<link rel="stylesheet" type="text/css" media="print" href="../kprintstyle.css" />
+<title>Flash Card Selection Page</title>
+
+<script type="text/javascript">
+// <![CDATA[
+
+function goCards()
+{
+    var str;
+    var setup = document.getElementById("setup");
+    
+    str = "flshcard.htm?";
+    str += (setup.c0.checked) ? "1" : "0";
+    str += (setup.c1.checked) ? "1" : "0";
+    str += (setup.c2.checked) ? "1" : "0";
+    str += (setup.c3.checked) ? "1" : "0";
+    top.location.href = str;
+}
+
+function setupData()
+{
+    var today = new Date();
+    var path;
+    var str;
+    var i;
+
+    if (!document.cookie)
+    {
+        i = today.getYear();
+
+        if (i < 1900)
+        {
+            i += 1901;
+        }
+        else
+        {
+            i++;
+        }
+        today.setYear(i);
+
+        str = "";
+        for (i=0; i<5; i++)
+        {
+            str += "0000000000000000000000000"; // 25 each
+        }
+        path = top.location.pathname;
+
+        delim = (path.lastIndexOf("\\") >= 0) ? "\\" : "/";
+
+        i = path.lastIndexOf( delim );  // strip away the filename
+        path = path.substring(0, i);
+        i = path.lastIndexOf( delim );  // strip away folder name
+        if (i > 0)
+        {
+            path = path.substring(0, i);
+        }
+        document.cookie = "fcard1=" + str + ";expires=" + today.toGMTString() +
+            ";path=" + path;
+    }
+    else
+    {
+        str = document.cookie;
+        i = str.indexOf( "fcard1=" );
+        str = str.substring( i + 5, i + 130 );
+    }
+}
+// ]]>
+</script>
+
+</head>
+
+<body onload="setupData();">
+<h1>Vocabulary Flash Card</h1>
+<h2>See the Vocabulary items</h2>
+<ul>
+<li><a href="flshshow.htm?1">Section 1</a></li>
+<li><a href="flshshow.htm?2">Section 2</a></li>
+<li><a href="flshshow.htm?3">Section 3</a></li>
+</ul>
+
+<h2>Quiz Yourself</h2>
+<form id="setup" action="#">
+<p>Which problems would you like to include?</p>
+<p><input type="button" value="Do All Problems"
+    onclick="top.location.href='flshcard.htm?1111'" /></p>
+<p><big><b>OR:</b></big></p>
+<p>
+<input type="checkbox" name="c0" checked="checked" /> Problems I haven&#8217;t seen yet <br />
+<input type="checkbox" name="c2" checked="checked" /> Problems I&#8217;ve missed or seen answers for <br />
+<input type="checkbox" name="c3" /> Problems I&#8217;ve skipped <br />
+<input type="checkbox" name="c1" /> Problems I&#8217;ve tried and answered correctly <br />
+<input type="button" value="Start" onclick="goCards();" />
+</p>
+</form>
+
+<hr />
+<p><a href="flshstat.htm">See how you are doing.</a></p>
+
+<!-- navigation -->
+<div id="bottom">
+
+<div id="left">
+</div>
+
+<div id="middle">
+<a href="vocab.htm"><img src="../pics/up_arrow.png" class="noborder" 
+    width="26" height="11" alt="(Menu)" />Vocabulary Index</a>
+</div>
+
+<div id="right">
+</div>
+
+</div>
+<!-- end navigation -->
+
+</body>
+</html>

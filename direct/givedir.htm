@@ -1,0 +1,448 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" type="text/css" media="screen" href="../kstyle.css" />
+<link rel="stylesheet" type="text/css" media="print" href="../kprintstyle.css" />
+<title>Giving Directions</title>
+<script type="text/javascript">
+
+var BLOCK = 40;
+var GAP = 5;
+var EAST = 0; // counterclockwise from 0 degrees, for no good reason
+var NORTH = 1;
+var WEST = 2;
+var SOUTH = 3;
+var EMPTY = 4;
+var TSIZE = 12; // triangle width
+
+var MAXROW = 14;
+var MAXCOL = 14;
+
+var cursorPoint = {x: -1, y: -1, facing: -1};
+var destPoint = {x: -1, y: -1};
+var startPoint = {x: -1, y: -1};
+var path = [];
+var cursorImage = [null, null, null, null];
+
+/***************************************************************************
+    Convert a street address (horizontal, vertical) to a screen
+    address. Odd horizontal are on the west side of an intersection;
+    even horizontal on the east side. Odd vertical are on the north
+    side, even vertical on the south side.
+***************************************************************************/
+function screenAddress(col, row, oddOffset, evenOffset)
+{
+    var  x, y;
+
+    x = Math.floor((col + 1) / 2) * (BLOCK + GAP);
+    if (col % 2 == 1)
+    {
+        x -= (GAP + oddOffset);
+    }
+    else
+    {
+        x += evenOffset;
+    }
+    
+    y = Math.floor((row + 1) / 2) * (BLOCK + GAP);
+    if (row % 2 == 1)
+    {
+        y -= (GAP + oddOffset);
+    }
+    else
+    {
+        y += evenOffset;
+    }
+    return {x: x, y: y};
+}
+
+function drawDestination(ctx)
+{
+    var p = screenAddress(destPoint.x, destPoint.y, 10, 8);
+    ctx.fillStyle = "rgb(0, 128, 0)";
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, 6, 0, 2 * Math.PI);
+    ctx.fill();
+}
+
+function setDestination(x, y)
+{
+    destPoint.x = x;
+    destPoint.y = y;
+}
+
+function eraseCursor(ctx)
+{
+    var screen;
+    var x, y;
+    if (cursorPoint.x >= 0 && cursorPoint.y >= 0)
+    {
+        screen = screenAddress(cursorPoint.x, cursorPoint.y, 15, 3);
+        x = screen.x;
+        y = screen.y;
+        ctx.fillStyle = "white";
+        ctx.fillRect(x, y, TSIZE, TSIZE);
+    }
+}
+
+function drawCursor(ctx)
+{
+    var screen;
+    var x, y;
+    if (cursorPoint.x >= 0 && cursorPoint.y >= 0)
+    {
+        screen = screenAddress(cursorPoint.x, cursorPoint.y, 15, 3);
+        x = screen.x;
+        y = screen.y;
+        ctx.fillStyle = "white";
+        ctx.fillRect(x, y, TSIZE, TSIZE);
+        ctx.fillStyle = "blue";
+        ctx.beginPath();
+        // ctx.drawImage(cursorImage[cursorPoint.facing], screen.x, screen.y);
+        switch (cursorPoint.facing)
+        {
+            case NORTH:
+                ctx.moveTo(x + TSIZE / 2, y);
+                ctx.lineTo(x + 1, y + TSIZE);
+                ctx.lineTo(x + TSIZE - 1, y + TSIZE);
+                break;
+            case EAST:
+                ctx.moveTo(x, y + 1);
+                ctx.lineTo(x + TSIZE, y + TSIZE / 2);
+                ctx.lineTo(x, y + TSIZE - 1);
+                break;
+            case SOUTH:
+                ctx.moveTo(x + 1, y);
+                ctx.lineTo(x + TSIZE - 1, y);
+                ctx.lineTo(x + TSIZE / 2, y + TSIZE);
+                break;
+            case WEST:
+                ctx.moveTo(x, y + TSIZE / 2);
+                ctx.lineTo(x + TSIZE, y + 1);
+                ctx.lineTo(x + TSIZE, y + TSIZE - 1);
+                break;
+        }
+        ctx.closePath();
+        ctx.fill();
+    }
+}
+
+function setCursor(cx, cy, facing)
+{
+    cursorPoint = {x: cx, y: cy, facing: facing};
+}
+
+function drawGrid(ctx)
+{
+    var row, col;
+    var nRows = MAXROW;
+    var nCols = MAXCOL;
+    var p;
+    
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx.strokeStyle = "black"
+
+    ctx.beginPath();
+    for (row=1; row < nRows-1; row++)
+    {
+        p = screenAddress(0, row, 0, 0);
+        for (col = 0; col < nCols/2; col++)
+        {
+            ctx.moveTo(col * (BLOCK + GAP), p.y);
+            ctx.lineTo(col * (BLOCK + GAP) + BLOCK, p.y);
+        }
+    }
+
+    for (col = 1; col < nCols-1; col++)
+    {
+        p = screenAddress(col, 0, 0, 0);
+        for (row=0; row < nRows / 2; row++)
+        {
+            ctx.moveTo(p.x, row * (BLOCK + GAP));
+            ctx.lineTo(p.x, row * (BLOCK + GAP) + BLOCK);
+        }
+    }
+    ctx.stroke();
+}
+
+function redraw(ctx)
+{
+    drawGrid(ctx);
+    drawDestination(ctx);
+    drawCursor(ctx);
+}
+
+/***************************************************************************
+        Are we at a point where we can actually cross the street?
+***************************************************************************/
+function crossingValid()
+{
+    var facing = cursorPoint.facing;
+    var result = ((facing == EAST) && (cursorPoint.x % 2 == 1)) ||
+            ((facing == WEST) && (cursorPoint.x % 2 == 0)) ||
+            ((facing == NORTH) && (cursorPoint.y % 2 == 0)) ||
+            ((facing == SOUTH) && (cursorPoint.y % 2 == 1))
+    if (result)
+    {
+        result = moveValid(1);
+    }
+    return result;
+}
+
+function updatePath(ctx)
+{
+    var position;
+    var screen;
+    
+    position = actionHistory[0].position;
+    screen = screenAddress(position.x, position.y, 8, 8);
+    ctx.beginPath();
+    ctx.strokeStyle = 'blue';
+    ctx.moveTo(screen.x, screen.y);
+    for (var i = 1; i < actionHistory.length; i++)
+    {
+        position = actionHistory[i].position;
+        screen = screenAddress(position.x, position.y, 8, 8);
+        ctx.lineTo(screen.x, screen.y);
+    }
+    ctx.stroke();
+}
+
+/***************************************************************************
+    Can we move N blocks in the current direction?
+***************************************************************************/
+function moveValid(n)
+{
+    var x;
+    var y;
+
+    x = cursorPoint.x;
+    y = cursorPoint.y;
+    switch (cursorPoint.facing)
+    {
+        case EAST:
+            x += n;
+            break;
+        case WEST:
+            x -= n;
+            break;
+        case NORTH:
+            y -= n;
+            break;
+        case SOUTH:
+            y += n;
+            break;
+    }
+    return (x > 0 && x < MAXROW - 1 && y > 1 && y < MAXCOL - 1)
+}
+
+var ctx;
+
+var currX, currY, destX, destY;
+var facing;
+var dirApp = null;
+/*
+    How far to move X and Y for East, North, West, South
+*/
+var xMove = [1, 0, -1, 0];
+var yMove = [0, -1, 0, 1];
+
+// store last fifty actions
+var actionHistory = [];
+var nActions;
+
+function clone(cursorObj)
+{
+    var result = {x: cursorObj.x, y: cursorObj.y, facing: cursorObj.facing};
+    return result;
+}
+
+function setMessage(msgStr)
+{
+    document.getElementById("feedback").innerText = msgStr;
+}
+
+function newPoint()
+{
+    facing = Math.floor(Math.random() * 4);
+    currX =  1 + Math.floor(Math.random() * (MAXCOL - 2));
+    currY =  1 + Math.floor(Math.random() * (MAXROW - 2));
+    destX =  1 + Math.floor(Math.random() * (MAXCOL-2));
+    destY =  1 + Math.floor(Math.random() * (MAXROW-2));
+    while (currX == destX && currY == destY)
+    {
+        destX =  1 + Math.floor(Math.random() * (MAXCOL-2));
+        destY =  1 + Math.floor(Math.random() * (MAXROW-2));
+    }
+    setCursor(currX, currY, facing);
+    setDestination(destX, destY);
+    setMessage("\u00a0")
+    actionHistory = [{position: {x: currX, y: currY, facing: facing}}];
+}
+
+function turn(n)
+{
+    var f = cursorPoint.facing + n;
+
+    if (f < 0)
+    {
+        f = 3;
+    }
+    else if (f > 3)
+    {
+        f = 0;
+    }
+    cursorPoint.facing = f;
+    actionHistory.push({action: "turn", position: clone(cursorPoint)});
+    console.log("After turn len", actionHistory.length, "Pushing turn result:", cursorPoint)
+
+    drawCursor(ctx);
+}
+
+function crossStreet()
+{
+    if (crossingValid())
+    {
+        moveCursor(1);
+    }
+    else
+    {
+        setMessage("Cannot cross street here, sorry.");
+    }
+}
+
+function goBlocks()
+{
+    var n;
+    
+    n = parseInt(document.getElementById("nblocks").value);
+    if (n <= 0)
+    {
+        setMessage("Please use a number greater than zero.");
+    }
+    else if (!isNaN(n))
+    {
+        n = 2 * n;
+        if (!crossingValid())
+        {
+            n--;
+        }
+        moveCursor(n);
+    }
+}
+
+function moveCursor(n)
+{
+    var x, y;
+
+    x = cursorPoint.x + n * xMove[cursorPoint.facing];
+    y = cursorPoint.y + n * yMove[cursorPoint.facing];
+    if (x >= 0 && y >= 0 && x < MAXCOL && y < MAXROW)
+    {
+        eraseCursor(ctx);
+        currX = x;
+        currY = y;
+        setCursor(currX, currY, cursorPoint.facing);
+        actionHistory.push({action: "move", n: n, position: clone(cursorPoint)});
+        console.log("After turn len", actionHistory.length, "Pushing turn result:", cursorPoint)
+        updatePath(ctx);
+        drawCursor(ctx);
+        if (currX == destX && currY == destY)
+        {
+            setMessage("You got there! Click \"New Point\" to try again.");
+        }
+        else
+        {
+            setMessage("\u00a0");
+        }
+    }
+    else
+    {
+        setMessage("Sorry, I can’t move that far.");
+    }
+}
+
+function undo()
+{
+    var lastAction;
+    if (actionHistory.length > 1)
+    {
+        console.log("History length is", actionHistory.length);
+        lastAction = actionHistory.pop();
+        if (lastAction.action == "turn") {
+            console.log("Popped", lastAction.action, lastAction.position);
+            eraseCursor(ctx);
+            console.log("new length is", actionHistory.length);
+            cursorPoint = clone(actionHistory[actionHistory.length - 1].position);
+            console.log("Restore to", cursorPoint);
+            drawCursor(ctx);
+        }
+        else if (lastAction.action == "move") {
+            console.log("Popped", lastAction.action, lastAction.position);
+            console.log("new length is", actionHistory.length);
+            cursorPoint = clone(actionHistory[actionHistory.length - 1].position);
+            console.log("Restore to", cursorPoint);
+            drawGrid(ctx);
+            drawDestination(ctx);
+            updatePath(ctx);
+            drawCursor(ctx);
+           
+        }
+    }
+    setMessage("\u00a0");
+}
+
+function initialize()
+{
+    newPoint();
+    ctx = document.getElementById("city").getContext('2d');
+    redraw(ctx);
+}
+
+</script>
+</head>
+
+<body onload="initialize();">
+<h1>Giving Directions</h1>
+<p><a href="direct.htm">Back to Directions index</a></p>
+<table border="0">
+<tr>
+<td>
+    <canvas id="city" width="300" height="300">
+        <p>Sorry, but your browser does not support
+        the &lt;canvas&gt; element.</p>
+    </canvas>
+</td>
+
+<td>
+     <p>The green dot is your destination. The blue triangle shows your
+     position and which way you’re facing. Click a button next
+     to the instruction you wish to perform.</p>
+     <hr />
+    <p><input type="button" value="   " onclick="turn(1);" />
+        <span class="k">왼쪽으로 도세요</span>
+    <br />
+    <input type="button" value="   " onclick="turn(-1);" />
+        <span class="k">오른쪽으로 도세요</span>
+    <br />
+    <input type="button" value="   " onclick="crossStreet();" />
+        <span class="k">길을 건너세요</span>
+    <br />
+    <input type="button" value="   " onclick="goBlocks();" />
+    <span class="k">똑바로</span>
+    <input type="text" id="nblocks" size="3" value="1" />
+    <span class="k">블록 가세요</span>
+    </p>
+    <p>
+    <input type="button" value="Undo" onclick="undo();" />
+    <input type="button" value="New Point" onclick = "initialize();" />
+    </p>
+    </td>
+</tr>
+</table>
+<p id="feedback">&nbsp;</p>
+</body>
+</html>

@@ -1,0 +1,404 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" type="text/css" media="screen" href="../kstyle.css" />
+<link rel="stylesheet" type="text/css" media="print" href="../kprintstyle.css" />
+<style type="text/css">
+    div.kbd p {
+        margin: 10px;
+    }
+
+    .box {
+        font-family: UnDotum;
+        font-size: 125%;
+        border: 1px solid black;
+        padding: 2px;
+        cursor: default;
+    }
+</style>
+
+<title>Family Quiz 1</title>
+
+<script type="text/javascript" src="../kinput.js"></script>
+<script type="text/javascript" src="../driver.js"></script>
+<script type="text/javascript">
+// <![CDATA[
+
+var svgDocument;
+var checkBtn; // the "Check answer" button
+var nextBtn;
+var showBtn;
+
+
+var kword = [
+    "형", "오빠", "누나", "언니",
+    "남동생", "여동생", 
+    "아버지", "어머니", "딸", "아들",
+    "할어버지", "할머니"];
+    
+var svgId = [
+    "meb", "feb", "mes", "fes",
+    "myb", "mys", "father", "mother",
+    "daughter", "son", "grandfather", "grandmother"];
+
+var diagram;
+
+
+function displayWord(id, status)
+{
+    svgDocument.getElementById(id).style.visibility = status;
+}
+
+function colorLine(id, colour, widthFactor)
+{
+    var line = svgDocument.getElementById(id);
+    var paths = line.getElementsByTagName("path");
+    var theStyle;
+    var w;
+    
+    for (var i = 0; i < paths.length; i++) {
+        theStyle = paths[i].style;
+        w = getComputedStyle(paths[i]).strokeWidth;
+        if (theStyle.fill == "none")
+        {
+            paths[i].style.fill = "none";
+            paths[i].style.stroke = colour;
+            paths[i].style.strokeWidth = w * widthFactor;
+        }
+        else
+        {
+            paths[i].style.fill = colour;
+            paths[i].style.stroke = "none";
+        }
+    }
+}
+
+function showProblem()
+{
+    var id;
+    if (problemNumber > 0)
+    {
+        id = svgId[order[problemNumber - 1]];
+        colorLine(id + "_arrow", "rgb(0, 0, 0)", 0.5);
+        displayWord(id, "hidden");
+    }
+    id = svgId[order[problemNumber]];
+    colorLine(id + "_arrow", "rgb(255, 0, 0)", 2.0);
+}
+
+function nextProblem() {
+    problemNumber++;
+    if (problemNumber < maxProblem)
+    {
+        checkBtn.disabled = false;
+        showBtn.disabled = false;
+        document.getElementById("feedback").innerText = "\u00a0";
+        resetInput();
+        showProblem();
+    }
+    else
+    {
+        checkBtn.disabled = true;
+        nextBtn.disabled = true;
+    }
+}
+
+function judgeCorrect() {
+    var student = document.getElementById("korean").innerText;
+    return (student == kword[order[problemNumber]]);
+}
+
+function giveFeedback()
+{
+    var el = document.getElementById("feedback");
+    if (correctAnswer)
+    {
+        el.innerText = randomPositiveFeedback();
+        checkBtn.disabled = true;
+        showBtn.disabled = true;
+    }
+    else
+    {
+        if (nTries < maxTries)
+        {
+            el.innerText = "Sorry, that’s not it (attempt " + nTries + " of " + maxTries + ")";
+        }
+        else
+        {
+            el.innertext = "Click “Show answer” to see the correct answer.";
+            checkBtn.disabled = true;
+        }
+    }
+}
+
+function showAnswer()
+{
+    resetInput();
+    displayWord(svgId[order[problemNumber]], "visible");
+    document.getElementById("feedback").innerText = "\u00a0";
+    checkBtn.disabled = true;
+}
+
+function init()
+{
+    checkBtn = document.getElementById("check");
+    showBtn = document.getElementById("showCorrect");
+    nextBtn = document.getElementById("next");
+    svgDocument = document.getElementById("diagram").contentDocument;
+    for (var i = 0; i < svgId.length; i++)
+    {
+        displayWord(svgId[i], "hidden");
+    }
+    maxTries = 3;
+    maxProblem = svgId.length;
+    setupDriver();
+}
+
+
+// ]]>
+</script>
+</head>
+
+<body onload="initInput('', 'korean', 4); init();">
+<h2>Family Quiz 1</h2>
+<noscript>
+<hr />
+<p>You must have Javascript enabled for this page to work properly.</p>
+<hr />
+</noscript>
+
+<div style="margin-left: 2em">
+<object type="image/svg+xml" data="relationships.svg" id="diagram">
+  Picture of parental and sibling relationships <!-- fallback image in CSS -->
+</object>
+</div>
+
+<p>Your answer: <span class="k" id="korean">&#160;</span></p>
+
+<div class="kbd">
+<p>
+<span class="box" onclick="addLetter('ㄱ')">ㄱ</span><span
+    class="box" onclick="addLetter('ㄴ')">ㄴ</span><span
+    class="box" onclick="addLetter('ㄷ')">ㄷ</span><span
+    class="box" onclick="addLetter('ㄹ')">ㄹ</span><span
+    class="box" onclick="addLetter('ㅁ')">ㅁ</span><span
+    class="box" onclick="addLetter('ㅂ')">ㅂ</span><span
+    class="box" onclick="addLetter('ㅅ')">ㅅ</span><span
+    class="box" onclick="addLetter('ㅇ')">ㅇ</span><span
+    class="box" onclick="addLetter('ㅈ')">ㅈ</span><span
+    class="box" onclick="addLetter('ㅊ')">ㅊ</span><span
+    class="box" onclick="addLetter('ㅋ')">ㅋ</span><span
+    class="box" onclick="addLetter('ㅌ')">ㅌ</span><span
+    class="box" onclick="addLetter('ㅍ')">ㅍ</span><span
+    class="box" onclick="addLetter('ㅎ')">ㅎ</span><span
+    class="box" onclick="addLetter('ㄲ')">ㄲ</span><span
+    class="box" onclick="addLetter('ㄸ')">ㄸ</span><span
+    class="box" onclick="addLetter('ㅃ')">ㅃ</span><span
+    class="box" onclick="addLetter('ㅆ')">ㅆ</span><span
+    class="box" onclick="addLetter('ㅉ')">ㅉ</span>
+    </p>
+    
+    <p>
+    <span class="box" onclick="addLetter('ㄳ')">ㄳ</span><span
+    class="box" onclick="addLetter('ㄵ')">ㄵ</span><span
+    class="box" onclick="addLetter('ㄶ')">ㄶ</span><span
+    class="box" onclick="addLetter('ㄺ')">ㄺ</span><span
+    class="box" onclick="addLetter('ㄻ')">ㄻ</span><span
+    class="box" onclick="addLetter('ㄼ')">ㄼ</span><span
+    class="box" onclick="addLetter('ㄽ')">ㄽ</span><span
+    class="box" onclick="addLetter('ㄾ')">ㄾ</span><span
+    class="box" onclick="addLetter('ㄿ')">ㄿ</span><span
+    class="box" onclick="addLetter('ㅀ')">ㅀ</span><span
+    class="box" onclick="addLetter('ㅄ')">ㅄ</span>
+    &#160; &#160; <span
+    class="box" onclick="backspace()">&#8592;</span>
+    &#160;
+    <span class="box" style="font-family: sans-serif;"
+        onclick="forceSyllableEnd()"><span style="font-size: small">End syll</span></span>
+    <span class="box" style="font-family: sans-serif;"
+        onclick="resetInput()"><span style="font-size: small">Reset</span></span>
+    </p>
+    
+    <p>
+    <span class="box" onclick="addLetter('ㅏ')">ㅏ</span><span
+    class="box" onclick="addLetter('ㅑ')">ㅑ</span><span
+    class="box" onclick="addLetter('ㅓ')">ㅓ</span><span
+    class="box" onclick="addLetter('ㅕ')">ㅕ</span><span
+    class="box" onclick="addLetter('ㅗ')">ㅗ</span><span
+    class="box" onclick="addLetter('ㅛ')">ㅛ</span><span
+    class="box" onclick="addLetter('ㅜ')">ㅜ</span><span
+    class="box" onclick="addLetter('ㅠ')">ㅠ</span><span
+    class="box" onclick="addLetter('ㅡ')">ㅡ</span><span
+    class="box" onclick="addLetter('ㅣ')">ㅣ</span><span
+    class="box" onclick="addLetter('ㅐ')">ㅐ</span><span
+    class="box" onclick="addLetter('ㅒ')">ㅒ</span><span
+    class="box" onclick="addLetter('ㅔ')">ㅔ</span><span
+    class="box" onclick="addLetter('ㅖ')">ㅖ</span><span
+    class="box" onclick="addLetter('ㅘ')">ㅘ</span><span
+    class="box" onclick="addLetter('ㅙ')">ㅙ</span><span
+    class="box" onclick="addLetter('ㅚ')">ㅚ</span><span
+    class="box" onclick="addLetter('ㅝ')">ㅝ</span><span
+    class="box" onclick="addLetter('ㅞ')">ㅞ</span><span
+    class="box" onclick="addLetter('ㅟ')">ㅟ</span><span
+    class="box" onclick="addLetter('ㅢ')">ㅢ</span>
+    </p>
+</div>
+
+<p>
+Enter the Korean word for the relationship that you see highlighted above.
+
+<p id="feedback">&#160;</p>
+
+<p>
+<input type="button" value="Next Problem" id="next" onclick = "nextProblem();" />
+<input type="button" value="Check answer" id="check" onclick = "checkAnswer();" />
+<input type="button" value="Show answer" id="showCorrect" onclick = "showAnswer();" />
+</p>
+
+<p>
+<a href="../kbdhow2.htm">Find out how to enter Korean words</a>
+</p>
+
+</form>
+
+<!-- navigation -->
+<div id="bottom">
+
+<div id="left">
+<a href="direct.htm"><img src="../pics/l_arrow.png" width="16" height="11" class="noborder" alt="(back)" />Direct Relationships</a>
+</div>
+
+<div id="middle">
+<a href="../index.htm"><img src="../pics/up_arrow.png" class="noborder" 
+    width="26" height="11" alt="(Menu)" />Main Index</a>
+</div>
+
+<div id="right">
+<a href="unc_aunt.htm">Uncles and Aunts<img src="../pics/r_arrow.png" class="noborder" width="16" height="11" alt="(next)" /></a>
+</div>
+
+</div>
+<!-- end navigation -->
+
+<div>
+<map name="kinputmap" id="kinputmap">
+<area shape="rect" coords="0,0,18,18" href="javascript:addLetter('k..');" 
+    alt="k" />
+<area shape="rect" coords="18,0,36,18" href="javascript:addLetter('n..');" 
+    alt="n" />
+<area shape="rect" coords="36,0,54,18" href="javascript:addLetter('t..');"
+    alt="t" />
+<area shape="rect" coords="54,0,72,18" href="javascript:addLetter('r..');"
+    alt="r" />
+<area shape="rect" coords="72,0,90,18" href="javascript:addLetter('m..');"
+    alt="m" />
+<area shape="rect" coords="90,0,108,18" href="javascript:addLetter('p..');"
+    alt="p" />
+<area shape="rect" coords="108,0,126,18" href="javascript:addLetter('s..');"
+    alt="s" />
+<area shape="rect" coords="126,0,144,18" href="javascript:addLetter('@..');"
+    alt="ng" />
+<area shape="rect" coords="144,0,162,18" href="javascript:addLetter('j..');"
+    alt="j" />
+<area shape="rect" coords="162,0,180,18" href="javascript:addLetter('c#.');"
+    alt="ch'" />
+<area shape="rect" coords="180,0,198,18" href="javascript:addLetter('k#.');"
+    alt="k'" />
+<area shape="rect" coords="198,0,216,18" href="javascript:addLetter('t#.');"
+    alt="t'" />
+<area shape="rect" coords="216,0,234,18" href="javascript:addLetter('p#.');"
+    alt="p'" />
+<area shape="rect" coords="234,0,252,18" href="javascript:addLetter('h..');"
+    alt="h" />
+<area shape="rect" coords="252,0,270,18" href="javascript:addLetter('kk.');"
+    alt="kk" />
+<area shape="rect" coords="270,0,288,18" href="javascript:addLetter('tt.');"
+    alt="tt" />
+<area shape="rect" coords="288,0,306,18" href="javascript:addLetter('pp.');"
+    alt="pp" />
+<area shape="rect" coords="306,0,324,18" href="javascript:addLetter('ss.');"
+    alt="ss" />
+<area shape="rect" coords="324,0,342,18" href="javascript:addLetter('jj.');"
+    alt="jj" />
+
+<!-- consonant clusters -->
+<area shape="rect" coords="0,18,18,36" href="javascript:addLetter('ks.');"
+    alt="ks" />
+<area shape="rect" coords="18,18,36,36" href="javascript:addLetter('nj.');"
+    alt="nch" />
+<area shape="rect" coords="36,18,54,36" href="javascript:addLetter('nh.');"
+    alt="nh" />
+<area shape="rect" coords="54,18,72,36" href="javascript:addLetter('rk.');"
+    alt="rk" />
+<area shape="rect" coords="72,18,90,36" href="javascript:addLetter('rm.');"
+    alt="rm" />
+<area shape="rect" coords="90,18,108,36" href="javascript:addLetter('rp.');"
+    alt="rp" />
+<area shape="rect" coords="108,18,126,36" href="javascript:addLetter('rs.');"
+    alt="rs" />
+<area shape="rect" coords="126,18,144,36" href="javascript:addLetter('rt#');"
+    alt="rt'" />
+<area shape="rect" coords="144,18,162,36" href="javascript:addLetter('rp#');"
+    alt="rp'" />
+<area shape="rect" coords="162,18,180,36" href="javascript:addLetter('rh.');"
+    alt="rh" />
+<area shape="rect" coords="180,18,198,36" href="javascript:addLetter('ps.');"
+    alt="ps" />
+<!-- 198 through 216 empty -->
+<area shape="rect" coords="216,18,234,36" href="javascript:erase();"
+    alt="erase" />
+<area shape="rect" coords="234,18,252,36" href="javascript:newSyllable();"
+    alt="new" />
+<area shape="rect" coords="270,18,288,36" href="javascript:resetInput();"
+    alt="reset" />
+
+<!-- vowels -->
+<area shape="rect" coords="0,36,18,54" href="javascript:addLetter('a..');"
+    alt="a" />
+<area shape="rect" coords="18,36,36,54" href="javascript:addLetter('ya.');"
+    alt="ya" />
+<area shape="rect" coords="36,36,54,54" href="javascript:addLetter('eo.');"
+    alt="eo" />
+<area shape="rect" coords="54,36,72,54" href="javascript:addLetter('yeo');"
+    alt="yeo" />
+<area shape="rect" coords="72,36,90,54" href="javascript:addLetter('o..');"
+    alt="o" />
+<area shape="rect" coords="90,36,108,54" href="javascript:addLetter('yo.');"
+    alt="yo" />
+<area shape="rect" coords="108,36,126,54" href="javascript:addLetter('u..');"
+    alt="u" />
+<area shape="rect" coords="126,36,144,54" href="javascript:addLetter('yu.');"
+    alt="yu" />
+<area shape="rect" coords="144,36,162,54" href="javascript:addLetter('eu.');"
+    alt="eu" />
+<area shape="rect" coords="162,36,180,54" href="javascript:addLetter('i..');"
+    alt="i" />
+<area shape="rect" coords="180,36,198,54" href="javascript:addLetter('ae.');"
+    alt="ae" />
+<area shape="rect" coords="198,36,216,54" href="javascript:addLetter('yae');"
+    alt="yae" />
+<area shape="rect" coords="216,36,234,54" href="javascript:addLetter('e..');"
+    alt="e" />
+<area shape="rect" coords="234,36,252,54" href="javascript:addLetter('ye.');"
+    alt="ye" />
+<area shape="rect" coords="252,36,270,54" href="javascript:addLetter('wa.');"
+    alt="wa" />
+<area shape="rect" coords="270,36,288,54" href="javascript:addLetter('wae');"
+    alt="wae" />
+<area shape="rect" coords="288,36,306,54" href="javascript:addLetter('oe.');"
+    alt="oe" />
+<area shape="rect" coords="306,36,324,54" href="javascript:addLetter('weo');"
+    alt="weo" />
+<area shape="rect" coords="324,36,342,54" href="javascript:addLetter('we.');"
+    alt="we" />
+<area shape="rect" coords="342,36,360,54" href="javascript:addLetter('wi.');"
+    alt="wi" />
+<area shape="rect" coords="360,36,378,54" href="javascript:addLetter('yi.');"
+    alt="yi" />
+</map>
+</div>
+
+</body>
+</html>

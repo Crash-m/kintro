@@ -1,0 +1,79 @@
+<html>
+<head>
+<title>Opposites Vocab List</title>
+<script language="JavaScript">
+var english = new Array(
+    "The house is near.", "The bank is far.", "dormitory",
+    "from house to school"
+);
+
+function show( n )
+{
+    var str;
+    
+    str = "document.theForm.eng" + Math.abs(n) + ".value=";
+    if (n < 0)
+    {
+        str += "\"\";";
+    }
+    else
+    {
+        str += "\"" + english[n-1] + "\";";
+    }
+    eval(str);
+}
+</script>
+</head>
+<body bgcolor="#ffffff">
+<div align="center">
+\k()
+<br>
+<big><b>to be deep, to be shallow</b></big>
+</div>
+
+Move over the question mark to see the meaning.
+<form name="theForm">
+<img src="opp_pic/PIC1.png" width="221" height="93">
+<br>
+<a href="#" onMouseOver="show(1)" onMouseOut="show(-1)"><img src="opp_pic/lqmark.png"
+    width="18" height="18" border="0"></a>
+\k()
+<br>
+<input type="text" name="eng1" size="35">
+<p>
+<img src="opp_pic/PIC2.png" width="221" height="93">
+<br>
+<a href="#" onMouseOver="show(2)" onMouseOut="show(-2)"><img src="opp_pic/lqmark.png"
+    width="18" height="18" border="0"></a>
+\k()
+<br>
+<input type="text" name="eng2" size="35">
+
+<p>
+
+<b>Other words that you can use with these verbs:</b>
+<table>
+<tr>
+<td>
+<a href="#" onMouseOver="show(3)" onMouseOut="show(-3)"><img src="opp_pic/lqmark.png"
+    width="18" height="18" border="0"></a>
+\k()
+</td>
+<td>
+<input type="text" name="eng3" size="20">
+</td>
+</tr>
+<tr>
+<td>
+<a href="#" onMouseOver="show(4)" onMouseOut="show(-4)"><img src="opp_pic/lqmark.png"
+    width="18" height="18" border="0"></a>
+\k()
+</td>
+<td>
+<input type="text" name="eng4" size="20">
+</td>
+</tr>
+</table>
+</form>
+</body>
+</html>

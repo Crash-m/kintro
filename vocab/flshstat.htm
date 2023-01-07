@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" type="text/css" media="screen" href="../kstyle.css" />
+<link rel="stylesheet" type="text/css" media="print" href="../kprintstyle.css" />
+<title>Flash Cards</title>
+<script type="text/javascript" src="flshlist.js"></script>
+<script type="text/javascript">
+// <![CDATA[
+
+var maxProblem;
+
+var headings = new Array(
+    "Problems you have done correctly:",
+    "Problems you have missed:",
+    "Problems you have skipped:",
+    "Problems you have not done:"
+);
+
+var order = [1, 2, 3, 0];
+
+var debug = true;
+
+function makeElement(elementName, content)
+{
+    var el = document.createElement(elementName);
+    var txt = document.createTextNode(content);
+    el.appendChild(txt);
+    return el;
+}
+
+function showData()
+{
+    var i, j, k;
+    var temp;
+    var maxProblem;
+    
+    var listing = document.getElementById("listing");
+    var element;
+    var div;
+    
+    maxProblem = korean.length;
+    str = "";
+    if (!document.cookie)
+    {
+        for (i=0; i<maxProblem; i++)
+        {
+            str += "0";
+        }
+    }
+    else
+    {
+        str = document.cookie;
+        i = str.indexOf("fcard1=");
+        str = str.substring(i+7, i+7+korean.length);
+    }
+
+    for (i=0; i<4; i++)
+    {
+        element = makeElement("h2", headings[i]);
+        listing.appendChild(element);
+        
+        for (j=0; j < maxProblem; j++)
+        {
+            if (parseInt(str.charAt(j), 10) == order[i])
+            {
+                div = document.createElement("div");
+                element = makeElement("span", korean[j]);
+                element.setAttribute("class", "k");
+                div.appendChild(element);
+                div.appendChild(document.createTextNode('\u00a0' + english[j]));
+                listing.appendChild(div);
+            }
+        }
+    }
+}
+// ]]>
+</script>
+</head>
+
+<body>
+<h1>Status:</h1>
+<p><a href="flshintr.htm">Back to Flash Card choice page</a></p>
+
+<div id="listing"></div>
+
+<script type="text/javascript">
+ showData();
+</script>
+
+<p><a href="flshintr.htm">Back to Flash Card choice page</a></p>
+</body>
+</html>

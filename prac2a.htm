@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" type="text/css" media="screen" href="kstyle.css" />
+<link rel="stylesheet" type="text/css" media="print" href="kprintstyle.css" />
+<title>Practice 2a</title>
+</head>
+<body>
+<noscript>
+<hr />
+<p>
+You must have Javascript enabled for this page to work properly.
+</p>
+<hr />
+</noscript>
+<form id="inputForm" onsubmit="parent.CheckAnswer(); return false"
+    action="#">
+<p>
+The frame above shows Korean syllables. (If the syllables form an English word,
+it's shown beneath the Korean).
+</p>
+<p>
+Enter the romanized version of the Korean here:
+<input type="text" id="input" size="15" />
+<input type="button" id="check" value="Check Answer"
+    onclick="parent.CheckAnswer()" />
+</p>
+</form>
+
+<form id="infoForm" action="#">
+<p>
+Info: <input type="text" id="feedback" size="50" />
+<br />
+Problem <input type="text" id="probNum" size="4" /> of
+    <input type="text" id="maxProb" size="4" />
+Your score: <input type="text" id="score" size="4" value="0" />
+</p>
+<p>
+<input type="button" id="next" value="Next Problem"
+    onclick="parent.NextProblem()" />
+</p>
+</form>
+<hr/>
+<p>
+Click "Next Problem" above to get new problems. When you're ready to move on,
+click below.
+</p>
+
+<!-- navigation -->
+<div id="bottom">
+
+<div id="left">
+<a href="smpvowel.htm"><img src="pics/l_arrow.png" width="16" height="11" class="noborder" alt="(back)" />Simple vowel summary</a>
+</div>
+
+<div id="middle">
+<a href="toc.htm"><img src="pics/up_arrow.png" class="noborder" 
+    width="26" height="11" alt="(Menu)" />Table of Contents</a>
+</div>
+
+<div id="right">
+<a href="sndshft.htm">Shifting Sounds <img src="pics/r_arrow.png" class="noborder" width="16" height="11" alt="(next)" /></a>
+</div>
+
+</div>
+<!-- end navigation -->
+
+</body>
+</html>

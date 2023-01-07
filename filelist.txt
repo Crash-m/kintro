@@ -1,0 +1,5 @@
+-rw-r--r--    1 david    users        2425 Oct  8  1999 body.htm
+-rw-r--r--    1 david    users        7320 Oct  8  1999 bodyprac.htm
+-rw-r--r--    1 david    users        9305 Oct  8  1999 converse.htm
+-rw-r--r--    1 david    users         235 Oct  8  1999 datagone.htm
+-rw-r--r--    1 david    users         698 Oct  8  1999 ersdata.htm

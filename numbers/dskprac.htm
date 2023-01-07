@@ -1,0 +1,183 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" type="text/css" media="screen" href="../kstyle.css" />
+<link rel="stylesheet" type="text/css" media="print" href="../kprintstyle.css" />
+
+<script type="text/javascript" src="numutil.js"></script>
+<script type="text/javascript">
+// <![CDATA[
+
+var correctAnswer, maxProblem;
+var problemNumber;
+var nTries;
+var score;
+var congrats;
+var nextPageHref;
+var choices = new Array(3);
+var correctChoice;
+var answeredOK;
+
+function showKorean(which, n)
+{
+    var result = "";
+    var i, digit, pten;
+
+    var d = document.getElementById("syll" + which);
+
+    pten = 10000;
+    power = 4;
+    while (power >= 0)
+    {
+        part = "";
+        digit = Math.floor(n / pten);
+        if (digit != 0)
+        {
+            if (digit > 1)
+            {
+                part += sinoOnes[digit];
+            }
+            if ((power > 0) || (power == 0 && digit == 1))
+            {
+                part += powerStr[power];
+            }
+            result = result + part + " ";
+        }
+        power--;
+        n %= pten;
+        pten /= 10;
+    }
+    d.innerText = result;
+}
+
+function goProblem()
+{
+    var n;
+    var d;
+    var digits = new Array(4);
+    var i, j, place;
+    
+    answeredOK = false;
+    nTries = 0;
+    correctAnswer = Math.floor(Math.random() * 9999 + 1);
+    correctChoice = Math.floor(Math.random() * 3);
+    setText("feedback", "\u00a0");
+    setText("probNum", problemNumber + 1);
+    
+    choices[correctChoice] = correctAnswer;
+    
+    place = Math.floor(Math.random() * 4);
+    for (j=0; j < 2; j++)
+    {
+        n = correctAnswer;
+        for (i=0; i<4; i++)
+        {
+            digits[3-i] = n % 10;
+            n = Math.floor(n / 10);
+        }
+        digits[place] = (digits[place] + Math.floor(Math.random() * 7) + 1) % 10;
+        choices[(correctChoice+j+1) % 3] = 
+            digits[0] * 1000 + digits[1] * 100 + digits[2] * 10 + digits[3];
+        place += Math.floor(Math.random() * 2 + 1);
+        place %= 4;
+    }
+    setText("correctAnswer", correctAnswer);
+    for (i=0; i<3; i++)
+    {
+        showKorean(i, choices[i]);
+    }
+}
+
+function nextProblem()
+{
+    problemNumber++;
+    if (problemNumber == maxProblem)
+    {
+        top.location.href = nextPageHref;
+    }
+    else
+    {
+        goProblem();
+    }
+}
+
+function checkAnswer(clickedChoice)
+{
+    if (answeredOK || (nTries >= 3))
+    {
+        return;
+    }
+
+    if (clickedChoice == correctChoice)
+    {
+        score++;
+        setText("score", score);
+        setText("feedback", 
+            congrats[Math.floor(Math.random() * congrats.length)]);
+        answeredOK = true;
+    }
+    else
+    {
+        setText("feedback",
+            "The correct answer is \"" +
+            "ABC".charAt(correctChoice) + "\".");
+    }
+}
+
+function initialize()
+{
+    var i;
+
+    maxProblem = 20;
+    setText("maxProb", maxProblem);
+    nextPageHref = "numindex.htm";
+    
+    problemNumber = 0;
+    goProblem();
+}
+// ]]>
+</script>
+<title>Digits to Sino-Korean Numbers</title>
+</head>
+
+<body onload="setup();">
+<form id="infoForm" action="#">
+<p>Choose the correct Sino-Korean number for 
+    <span id="correctAnswer">&#160;</span></p>
+    
+<div>
+<input type="button" value=" A " onclick="checkAnswer(0)" />
+<span id="syll0" class="k">&#160;</span>
+</div>
+
+<div>
+<input type="button" value=" B " onclick="checkAnswer(1)" />
+<span id="syll1" class="k">&#160;</span>
+</div>
+
+<div>
+<input type="button" value=" C " onclick="checkAnswer(2)" />
+<span id="syll2" class="k">&#160;</span>
+</div>
+<noscript>
+<hr />
+<p>You must have Javascript enabled for this page to work properly.</p>
+<hr />
+</noscript>
+<p id="feedback">&nbsp;</p>
+<p>
+Problem <span id="probNum">1</span> of
+    <span id="maxProb">0</span>.
+Your score: <span id="score">0</span>
+</p>
+<p>
+<input type="button" id="next" value="Next Problem"
+    onclick="nextProblem()" />
+<input type="button" id="index" value="Back to Index"
+    onclick="top.location.href='numindex.htm'" />
+</p>
+</form>
+</body>
+</html>

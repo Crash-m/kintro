@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" type="text/css" media="screen" href="../kstyle.css" />
+<link rel="stylesheet" type="text/css" media="print" href="../kprintstyle.css" />
+<title>Nouns for Places</title>
+
+<script type="text/javascript" src="../playsnd.v2.1.js" />
+<script type="text/javascript" src="../dhtml.js" />
+<script type="text/javascript">
+// 
+var engword = new Array(
+    "house", "library",
+    "post office", "bakery",
+    "school", "bank"
+);
+// 
+</script>
+<script type="text/javascript" src="vocabutil.js" />
+</head>
+
+<body>
+<h1 class="centered">Nouns for Places</h1>
+
+<noscript>
+<hr />
+<p>You must have Javascript enabled for this page to work properly.</p>
+<hr />
+</noscript>
+
+<p>If you’re not sure what the picture is, move the mouse over it.
+Click the picture to hear the word spoken.</p>
+
+<form id="picform" action="#">
+<table border="1">
+<tr align="center">
+<td>
+<img src="../vocimg/house.png" class="noborder" width="24" height="24" alt="chip" />
+<br />
+    <a href="javascript:doSound(0,'house');" onmouseover="xlate(0, true)" onmouseout="xlate(0,false)">
+<img src="../vocimg/house.jpg" class="noborder" alt="house" width="213" height="150" />
+</a>
+    <div id="text0" />
+</td>
+
+<td>
+<img src="../vocimg/library.png" class="noborder" width="72" height="24" alt="to-seo-gwan" />
+<br />
+    <a href="javascript:doSound(1,'library');" onmouseover="xlate(1, true)" onmouseout="xlate(1,false)">
+<img src="../vocimg/library.jpg" class="noborder" width="155" height="150" alt="library" />
+</a>
+    <div id="text1" />
+</td>
+</tr>
+
+<tr align="center">
+<td>
+<img src="../vocimg/postoff.png" class="noborder" width="72" height="24" alt="u-ch'e-kuk" />
+<br />
+    <a href="javascript:doSound(2,'postoff');" onmouseover="xlate(2, true)" onmouseout="xlate(2,false)">
+<img src="../vocimg/postoff.jpg" class="noborder" width="165" height="145" alt="post office" />
+</a>
+    <div id="text2" />
+</td>
+
+<td>
+<img src="../vocimg/bakery.png" class="noborder" width="48" height="24" alt="ppang-chip" />
+<br />
+    <a href="javascript:doSound(3,'bakery');" onmouseover="xlate(3, true)" onmouseout="xlate(3,false)">
+<img src="../vocimg/bakery.jpg" class="noborder" width="200" height="150" alt="bakery" />
+</a>
+    <div id="text3" />
+</td>
+</tr>
+
+<tr align="center">
+<td>
+<img src="../vocimg/school.png" class="noborder" width="48" height="24" alt="hak-kyo" />
+<br />
+    <a href="javascript:doSound(4,'school');" onmouseover="xlate(4, true)" onmouseout="xlate(4,false)">
+<img src="../vocimg/school.jpg" class="noborder" width="226" height="150" alt="school" />
+</a>
+    <div id="text4" />
+</td>
+
+<td>
+<img src="../vocimg/bank.png" class="noborder" width="48" height="24" alt="eun-haeng" />
+<br />
+    <a href="javascript:doSound(5,'bank');" onmouseover="xlate(5, true)" onmouseout="xlate(5,false)">
+<img src="../vocimg/bank.jpg" class="noborder" width="203" height="150" alt="bank" />
+</a>
+    <div id="text5" />
+</td>
+</tr>
+</table>
+</form>
+
+<!-- navigation -->
+<div id="bottom">
+
+<div id="left">
+<a href="noun2.htm">
+<img src="../pics/l_arrow.png" width="16" height="11" class="noborder" alt="(back)" />Nouns in Your Pockets</a>
+</div>
+
+<div id="middle">
+<a href="vocab.htm">
+<img src="../pics/up_arrow.png" class="noborder" width="26" height="11" alt="(Menu)" />Vocabulary Index</a>
+</div>
+
+<div id="right">
+<a href="noun4.htm">Nouns at the Table<img src="../pics/r_arrow.png" class="noborder" width="16" height="11" alt="(next)" />
+</a>
+</div>
+
+</div>
+<!-- end navigation -->
+
+<audio id="sound" src="snd/silent.wav" /> 
+
+</body>
+</html>

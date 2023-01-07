@@ -1,0 +1,451 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" type="text/css" media="screen" href="../kstyle.css" />
+<link rel="stylesheet" type="text/css" media="print" href="../kprintstyle.css" />
+<style type="text/css">
+.ksmall {
+    font-family: UnDotum;
+    font-size: 150%;
+}
+</style>
+<title>The Auto-Conjugator</title>
+<script type="text/javascript" src="../dhtml.js"></script>
+
+<script type="text/javascript">
+// <![CDATA[
+
+// Verb stems
+var verbStems = ["가", "보", "배우", "읽", "있", "없", "다니", "하"];
+    
+/* 
+  key is stem vowel
+  value is vowel to combine, combined vowel, combined vowel index #
+  for composing the new syllable
+*/
+var vowelAdd = {"ㅏ": ["ㅏ", "ㅏ", 1],
+    "ㅗ": ["ㅏ", "ㅘ", 10],
+    "ㅜ": ["ㅓ", "ㅝ", 15],
+    "ㅣ": ["ㅓ", "ㅕ", 7]};
+    
+var cons1, vowel, cons2;
+
+var verb = 0;
+var tense = 0;
+var style = 'formal';
+var details = false;
+var theVerbs;
+var nSyllables;
+var resultDiv;
+
+function butLast(str)
+{
+    return str.substring(0, str.length - 1);
+}
+
+function splitSyll(n)
+{
+    n = n.charCodeAt(0) - 44032;
+    cons1 = Math.floor((n / 588)) + 1;
+    n = n % 588;
+    vowel = Math.floor((n / 28)) + 1;
+    cons2 = n % 28;
+    // console.log("stem:", cons1, vowel, cons2);
+}
+
+function compose(c1, v, c2)
+{
+    return String.fromCharCode(44032 + (c1 - 1) * 588 + (v - 1) * 28 + c2); 
+}
+
+function showLetter(n)
+{
+    return String.fromCharCode(0x3130 + n);
+}
+
+function addText(node, str)
+{
+    node.appendChild(document.createTextNode(str));
+}
+
+function addKorean(node, str)
+{
+    var span = document.createElement("span");
+    span.setAttribute("class", "ksmall");
+    span.appendChild(document.createTextNode(str));
+    node.appendChild(span);
+}
+
+function addBreak(node)
+{
+    node.appendChild(document.createElement("br"));
+}
+
+function setVerb(n)
+{
+    verb = n;
+}
+
+function setTense(n)
+{
+    tense = n;
+}
+
+function setStyle(str)
+{
+    style = str;
+}
+
+function presentTense()
+{
+    var stemVowel;
+    var suffix;
+    var subdiv;
+
+    subdiv = document.createElement("div");
+    if (style == "formal") // -pnida; -supnida
+    {
+        if (details)
+        {
+            if (cons2 == 0)
+            {
+                addText(subdiv, "Stem ends in a vowel. Add ");
+                addKorean(subdiv, "-ㅂ니다");
+            }
+            else
+            {
+                subdiv = document.createElement("div");
+                addText(subdiv, "Stem ends in a consonant. Add ");
+                addKorean(subdiv, "-습니다");
+            }
+            addText(subdiv, "");
+        }
+        if (cons2 == 0)
+        {
+            theVerb = butLast(theVerb) + compose(cons1, vowel, 17); // add -p
+        }
+        else
+        {
+            theVerb += "습";
+        }
+        theVerb += "니다";
+        resultDiv.appendChild(subdiv);
+    }
+    else            // informal -ayo, -eoyo
+    {
+        if (theVerb[theVerb.length - 1] == "하") // ha
+        {
+            if (details)
+            {
+                addText(subdiv, "Stem ends with ");
+                addKorean(subdiv, "하");
+                addText(subdiv, "; convert to ");
+                addKorean(subdiv, "해");
+            }
+            theVerb = butLast(theVerb) + "해요"; // becomes "hae"
+        }
+        else
+        {
+            stemVowel = showLetter(30 + vowel); // convert to Jamo
+            if (details)
+            {
+                addText(subdiv, "Stem vowel is ");
+                addKorean(subdiv, stemVowel);
+            }
+            if (cons2 != 0) // easy case -- just add the correct guy
+            {
+                suffix = (stemVowel == 'ㅏ') ? "아요" : "어요"; // yo
+                theVerb += suffix;
+                if (details)
+                {
+                    addText(subdiv, "; add ");
+                    addKorean(suffix);
+                }
+            }
+            else
+            {
+                if (details)
+                {
+                    addText(subdiv, ". Add ");
+                    addKorean(subdiv, vowelAdd[stemVowel][0]);
+                    addText(subdiv, "; these vowels contract to ");
+                    addKorean(subdiv, vowelAdd[stemVowel][1]);
+                    addBreak(subdiv);
+                    addText(subdiv, "Finally, add ");
+                    addKorean(subdiv, "요");
+                }
+                theVerb = butLast(theVerb) + (compose(cons1, vowelAdd[stemVowel][2], cons2)) + "요";
+            }
+        }
+    }
+    resultDiv.appendChild(subdiv);
+}
+
+function pastTense()
+{
+    var stemVowel;
+    var suffix;
+    var subdiv;
+    
+    subdiv = document.createElement("div");
+
+    if (theVerb[theVerb.length - 1] == "하") // ha
+    {
+        if (details)
+        {
+            addText(subdiv, "Stem ends with ");
+            addKorean(subdiv, "하");
+            addText(subdiv, "; convert to ");
+            addKorean(subdiv, "해");
+            addText(subdiv, " and add ");
+            addKorean(subdiv, "ㅆ");
+            addBreak(subdiv);
+        }
+        theVerb = theVerb.substring(0, nSyllables - 1) + "했";
+    }
+    else
+    {
+        stemVowel = showLetter(30 + vowel); // covert to Jamo
+        if (details)
+        {
+            addText(subdiv, "Stem vowel is ");
+            addKorean(subdiv, stemVowel);
+        }
+        if (cons2 != 0) // easy case -- just add the correct guy
+        {
+            suffix = (stemVowel == 'ㅏ') ? "았" : "었"
+            theVerb += suffix;
+            if (details)
+            {
+                addText(subdiv, "; add ");
+                addKorean(subdiv, suffix);
+                subdiv.appendChild(document.createElement("br"));
+            }
+        }
+        else
+        {
+            if (details)
+            {
+                addText(subdiv, ". Add ");
+                addKorean(subdiv, vowelAdd[stemVowel][0]);
+                addText(subdiv, "; these vowels contract to ");
+                addKorean(subdiv, vowelAdd[stemVowel][1]);
+                addBreak(subdiv);
+                addText(subdiv, "Add ");
+                addKorean(subdiv, "ㅆ");
+                addText(subdiv, "at the end of the syllable.");
+                addBreak(subdiv);
+            }
+            theVerb = butLast(theVerb) + compose(cons1, vowelAdd[stemVowel][2], 20);
+        }
+    }
+    if (details)
+    {
+        resultDiv.appendChild(subdiv);
+        subdiv = document.createElement("div");
+        addText(subdiv, "Finally, add ");
+        if (style == "formal")
+        {
+
+            addKorean(subdiv, "-습니다")
+        }
+        else
+        {
+            addKorean(subdiv, "-어요");
+        }
+        addText(subdiv, ".");
+        resultDiv.appendChild(subdiv);
+    }
+    if (style == "formal")
+    {
+        theVerb += "습니다";
+    }
+    else
+    {
+        theVerb += "어요";
+    }       
+}
+
+function futureTense()
+{
+    var vMap;
+    var subdiv = document.createElement("div");
+    if (details)
+    {
+        addText(subdiv, "Add ");
+        if (style == "formal")
+        {
+
+            addKorean(subdiv, "-겠습니다");
+        }
+        else
+        {
+            addKorean(subdiv, "-겠어요");
+        }
+        resultDiv.appendChild(subdiv);
+    }
+    theVerb += "겠";
+    if (style == "formal")
+    {
+        theVerb += "습니다";
+    }
+    else
+    {
+        theVerb += "어요";
+    }     
+}
+
+function setShow(showDetails)
+{
+    details = showDetails;
+    conjugate();
+}
+
+function conjugate()
+{
+    var i;
+    var subdiv;
+    
+    theVerb = verbStems[verb];
+    nSyllables = theVerb.length;
+    
+    resultDiv = document.createElement("div");
+    resultDiv.setAttribute("id", "results");
+
+    if (details)
+    {
+        subdiv = document.createElement("div");
+        addText(subdiv, "Stem: ");
+        addKorean(subdiv, theVerb);
+        resultDiv.appendChild(subdiv);
+    }
+
+    splitSyll(theVerb[theVerb.length - 1]);    // split up last syllable
+    
+    if (tense == 0)
+    {
+        presentTense();
+    }
+    else if (tense == 1)
+    {
+        pastTense();
+    }
+    else
+    {
+        futureTense();
+    }
+    if (details != 2)
+    {
+        subdiv = document.createElement("div");
+        addText(subdiv, "Conjugated verb:\xa0");
+        addKorean(subdiv, theVerb);
+        resultDiv.appendChild(subdiv);
+    }
+    oldNode = document.getElementById("results");
+    oldNode.parentNode.replaceChild(resultDiv, oldNode);
+}
+
+function resetForm() {
+    var theForm = document.getElementById("entry");
+    entry.verb[0].checked = true;
+    entry.tense[0].checked = true;
+    entry.style[0].checked = true;
+}
+// ]]>
+</script>
+</head>
+
+<body onload="resetForm()">
+<form id="entry" action="#">
+<h1 class="small nobottom">Choose a verb:</h1>
+    <table border="0">
+    <tr class="centered"><td><input type="radio" name="verb" value="0"
+        checked onclick="setVerb(0)" /><!-- k(ka-da) --><span class="ksmall">가다</span>
+
+    <br />to go</td>
+    <td width="5"></td>
+    <td><input type="radio" name="verb" value="1"
+         onclick="setVerb(1)" /><!-- k(po-da) --><span class="ksmall">보다</span>
+    <br />
+    to see</td>
+    <td width="5"></td>
+    <td><input type="radio" name="verb" value="2"
+         onclick="setVerb(2)" /><!-- k(pae-@u-da) --><span class="ksmall">배우다</span>
+
+    <br />to learn</td>
+    <td width="5"></td>
+    <td><input type="radio" name="verb" value="3"
+         onclick="setVerb(3)" /><!-- k(@irk-da) --><span class="ksmall">읽다</span>
+
+    <br />to read</td>
+    </tr>
+    <tr class="centered">
+    <td><input type="radio" name="verb" value="4"
+         onclick="setVerb(4)" /><!-- k(@iss-da) --><span class="ksmall">있다</span>
+    <br />
+    to have</td>
+    <td width="5"></td>
+    <td><input type="radio" name="verb" value="5"
+         onclick="setVerb(5)" /><!-- k(@eops-da) --><span class="ksmall">없다</span>
+    <br />
+    to not have</td>
+    <td width="5"></td>
+    <td><input type="radio" name="verb" value="6"
+         onclick="setVerb(6)" /><!-- k(ta-ni-da) --><span class="ksmall">다니다</span>
+    <br />to attend</td>
+    <td width="5"></td>
+    <td><input type="radio" name="verb" value="7"
+         onclick="setVerb(7)" /><!-- k(ha-da) --><span class="ksmall">하다</span>
+    <br />to do</td>
+    </tr>
+    </table>
+
+<h1 class="small nobottom">Choose a tense:</h1>
+    <div><input type="radio" name="tense" value="0" checked
+             onclick="setTense(0)" /> Present
+    <input type="radio" name="tense" value="1"
+             onclick="setTense(1)" /> Past
+    <input type="radio" name="tense" value="2"
+             onclick="setTense(2)" /> Future</div>
+<h1 class="small nobottom">Politeness level:</h1>
+    <div><input type="radio" name="style" value="formal" checked
+        onclick="setStyle('formal')" /> Polite Formal
+    <input type="radio" name="style" value="informal"
+        onclick="setStyle('informal')" /> Polite Informal</div>
+<p>
+    <input type="button" name="show" onclick="setShow(true)"
+        value="Show Steps" />
+    <input type="button" name="show" value="Show Just the Result"
+             onclick="setShow(false)" />
+</p>
+</form>
+
+<div id="results" class="k">
+
+</div>
+
+<!-- navigation -->
+<div id="bottom">
+
+<div id="left">
+<a href="preauto.htm"><img src="../pics/l_arrow.png" width="16" height="11"
+    class="noborder" alt="(back)" />About the AutoConjugator</a>
+</div>
+
+<div id="middle">
+<a href="grammar.htm"><img src="../pics/up_arrow.png" class="noborder" 
+    width="26" height="11" alt="(Menu)" />Grammar Index</a>
+</div>
+
+<div id="right">
+
+</div>
+
+</div>
+<!-- end navigation -->
+</body>
+
+</html>

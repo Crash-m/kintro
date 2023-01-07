@@ -1,0 +1,34 @@
+<html>
+<head>
+<title>Erase Saved Data</title>
+<script>
+<!-- hide
+function UnCookie()
+{
+    var i;
+    var path;
+    var today = new Date();
+    
+    today.setYear(today.getYear() - 1);
+    path = top.location.pathname;
+    i = path.lastIndexOf("/ersdata");
+    path = path.substring(0, i);
+    document.cookie = "fcard1=erase" + ";expires=" + today.toGMTString() +
+        ";path=" + path;
+    top.location.href = "datagone.htm";
+}               
+// -->
+</script>
+</head>
+
+<body bgcolor="#ffffff">
+<h1>Erase Saved Data</h1>
+<form>
+Do you want to erase all stored data for flash cards?
+<p>
+<input type="button" value="Yes" onClick="UnCookie()">
+<input type="button" value="No" onClick="top.location.href='flshintr.htm'">
+</form>
+
+</body>
+</html>

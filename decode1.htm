@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" type="text/css" media="screen" href="kstyle.css" />
+<link rel="stylesheet" type="text/css" media="print" href="kprintstyle.css" />
+<title>Decoding a Word</title>
+<script type="text/javascript" src="playsnd.v2.1.js">
+</script>
+</head>
+
+<body>
+<h1>What was that word?</h1>
+<p>
+Let’s break <span class="k">나무</span>
+(the word for <em>tree</em>) up into its parts, taking it
+out of the square syllable boxes
+so we can figure out how it's pronounced:
+</p>
+
+<table class="bordered-table">
+<tr align="center">
+<td rowspan="2">
+<span class="k">ㄴ</span>
+<br />n</td>
+<td rowspan="2">
+<span class="k">ㅏ</span>
+<br />a</td>
+<td>
+<span class="k">ㅁ</span> m</td>
+</tr>
+<tr>
+<td>
+<span class="k">ㅜ</span> u</td>
+</tr>
+</table>
+
+<p>
+This word is pronounced <strong>na-mu</strong>
+<button onclick="playSound('snd/namu');">
+<img class="speaker" alt="Play" src="pics/speaker.png" />
+</button>.
+</p>
+<p>
+And there you have it. It's an application of the rules for
+syllables:
+</p>
+<ol>
+<li>A syllable begins with a consonant.</li>
+<li>A syllable has at least one consonant and one vowel.</li>
+<li>Each syllable gets written in a square box.</li>
+</ol>
+<p>
+On the next page are the rules for writing syllables into a square box.
+</p>
+
+<!-- navigation -->
+<div id="bottom">
+
+<div id="left">
+<a href="horzvwl.htm">
+<img src="pics/l_arrow.png" width="16" height="11" class="noborder" alt="(back)" />More Vowels</a>
+</div>
+
+<div id="middle">
+<a href="toc.htm">
+<img src="pics/up_arrow.png" class="noborder" width="26" height="11" alt="(Menu)" />Table of Contents</a>
+</div>
+
+<div id="right">
+<a href="stack.htm">Stacking Rules <img src="pics/r_arrow.png" class="noborder" width="16" height="11" alt="(next)" />
+</a>
+</div>
+
+</div>
+<!-- end navigation -->
+
+<audio id="sound" src="snd/silent.wav" /> 
+
+</body>
+</html>

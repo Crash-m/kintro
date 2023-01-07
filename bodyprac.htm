@@ -1,0 +1,236 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" type="text/css" media="screen" href="kstyle.css" />
+<link rel="stylesheet" type="text/css" media="print" href="kprintstyle.css" />
+<style type="text/css">
+div.kbd p {
+    margin: 10px;
+}
+
+.box {
+    font-family: UnDotum;
+    font-size: 125%;
+    border: 1px solid black;
+    padding: 2px;
+    cursor: default;
+}
+</style>
+
+<title>Parts of the Body</title>
+
+<script type="text/javascript" src="kinput.js"></script>
+<script type="text/javascript" src="driver.js"></script>
+
+<script type="text/javascript">
+//<![CDATA[
+
+var checkBtn; // the "Check answer" button
+var nextBtn;
+var showBtn;
+
+var kword = ["머리", "귀", "이마", "눈", "코", "입", "목",
+    "어깨", "팔", "손", "가슴", "허리", "무릎", "다리", "발"];
+
+var eword = new Array(
+    "head", "ear", "forehead", "eye", "nose", "mouth", "neck",
+    "shoulder", "arm", "hand", "chest", "waist", "knee", "leg", "foot" );
+
+function init() {
+    maxTries = 3;
+    maxProblem = kword.length;
+    checkBtn = document.getElementById("check");
+    showBtn = document.getElementById("showCorrect");
+    nextBtn = document.getElementById("next");
+    setupDriver();
+}
+    
+function showProblem() {
+    document.getElementById("item").innerText = (order[problemNumber] + 1);
+    document.getElementById("english").innerText = eword[order[problemNumber]];
+    document.getElementById("feedback").innerText = "\u00a0";
+    checkBtn.disabled = false;
+    showBtn.disabled = false;
+    nextBtn.dsiabled = false;
+    resetInput();
+    nTries = 0;
+}
+
+function nextProblem() {
+    problemNumber++;
+    if (problemNumber < maxProblem)
+    {
+        showProblem();
+    }
+    else
+    {
+        checkBtn.disabled = true;
+        nextBtn.disabled = true;
+    }
+}
+
+function judgeCorrect() {
+    var student = document.getElementById("korean").innerText;
+    return (student == kword[order[problemNumber]]);
+}
+
+function giveFeedback()
+{
+    var el = document.getElementById("feedback");
+    if (correctAnswer)
+    {
+        el.innerText = randomPositiveFeedback();
+        checkBtn.disabled = true;
+        showBtn.disabled = true;
+    }
+    else
+    {
+        if (nTries < maxTries)
+        {
+            el.innerText = "Sorry, that’s not it (attempt " + nTries + " of " + maxTries + ")";
+        }
+        else
+        {
+            el.innertext = "Click “Show answer” to see the correct answer.";
+            checkBtn.disabled = true;
+        }
+    }
+}
+
+function showAnswer()
+{
+    resetInput();
+    document.getElementById("korean").innerText = kword[order[problemNumber]];
+    document.getElementById("feedback").innerText = "\u00a0";
+    checkBtn.disabled = true;
+}
+// ]]>
+</script>
+</head>
+
+<body onload="initInput('', 'korean', 3); init();">
+
+<noscript>
+<hr />
+<p>You must have Javascript enabled in order for this page to work properly.</p>
+<hr />
+</noscript>
+
+
+<h2>Parts of the Body</h2>
+<table>
+<tr valign="top">
+<td>
+<img src="body.png" alt="crude picture of person" width="212"
+    height="398" />
+</td>
+<td>
+<form id="quiz" action="#" onsubmit="return false;">
+<p>
+Enter the Korean word for number <span id="item"></span> :
+    <span id="english"></span>
+</p>
+
+<p>Korean: <span id="korean" class="k"></span></p>
+<p id="feedback">&#160;</p>
+
+<div class="kbd">
+<p>
+<span class="box" onclick="addLetter('ㄱ')">ㄱ</span><span
+    class="box" onclick="addLetter('ㄴ')">ㄴ</span><span
+    class="box" onclick="addLetter('ㄷ')">ㄷ</span><span
+    class="box" onclick="addLetter('ㄹ')">ㄹ</span><span
+    class="box" onclick="addLetter('ㅁ')">ㅁ</span><span
+    class="box" onclick="addLetter('ㅂ')">ㅂ</span><span
+    class="box" onclick="addLetter('ㅅ')">ㅅ</span><span
+    class="box" onclick="addLetter('ㅇ')">ㅇ</span><span
+    class="box" onclick="addLetter('ㅈ')">ㅈ</span><span
+    class="box" onclick="addLetter('ㅊ')">ㅊ</span><span
+    class="box" onclick="addLetter('ㅋ')">ㅋ</span><span
+    class="box" onclick="addLetter('ㅌ')">ㅌ</span><span
+    class="box" onclick="addLetter('ㅍ')">ㅍ</span><span
+    class="box" onclick="addLetter('ㅎ')">ㅎ</span><span
+    class="box" onclick="addLetter('ㄲ')">ㄲ</span><span
+    class="box" onclick="addLetter('ㄸ')">ㄸ</span><span
+    class="box" onclick="addLetter('ㅃ')">ㅃ</span><span
+    class="box" onclick="addLetter('ㅆ')">ㅆ</span><span
+    class="box" onclick="addLetter('ㅉ')">ㅉ</span>
+    </p>
+    
+    <p>
+    <span class="box" onclick="addLetter('ㄳ')">ㄳ</span><span
+    class="box" onclick="addLetter('ㄵ')">ㄵ</span><span
+    class="box" onclick="addLetter('ㄶ')">ㄶ</span><span
+    class="box" onclick="addLetter('ㄺ')">ㄺ</span><span
+    class="box" onclick="addLetter('ㄻ')">ㄻ</span><span
+    class="box" onclick="addLetter('ㄼ')">ㄼ</span><span
+    class="box" onclick="addLetter('ㄽ')">ㄽ</span><span
+    class="box" onclick="addLetter('ㄾ')">ㄾ</span><span
+    class="box" onclick="addLetter('ㄿ')">ㄿ</span><span
+    class="box" onclick="addLetter('ㅀ')">ㅀ</span><span
+    class="box" onclick="addLetter('ㅄ')">ㅄ</span>
+    &#160; &#160; <span
+    class="box" onclick="backspace()">&#8592;</span>
+    &#160;
+    <span class="box" style="font-family: sans-serif;"
+        onclick="endSyllable()"><span style="font-size: small">End syll</span></span>
+    <span class="box" style="font-family: sans-serif;"
+        onclick="resetInput()"><span style="font-size: small">Reset</span></span>
+    </p>
+    
+    <p>
+    <span class="box" onclick="addLetter('ㅏ')">ㅏ</span><span
+    class="box" onclick="addLetter('ㅑ')">ㅑ</span><span
+    class="box" onclick="addLetter('ㅓ')">ㅓ</span><span
+    class="box" onclick="addLetter('ㅕ')">ㅕ</span><span
+    class="box" onclick="addLetter('ㅗ')">ㅗ</span><span
+    class="box" onclick="addLetter('ㅛ')">ㅛ</span><span
+    class="box" onclick="addLetter('ㅜ')">ㅜ</span><span
+    class="box" onclick="addLetter('ㅠ')">ㅠ</span><span
+    class="box" onclick="addLetter('ㅡ')">ㅡ</span><span
+    class="box" onclick="addLetter('ㅣ')">ㅣ</span><span
+    class="box" onclick="addLetter('ㅐ')">ㅐ</span><span
+    class="box" onclick="addLetter('ㅒ')">ㅒ</span><span
+    class="box" onclick="addLetter('ㅔ')">ㅔ</span><span
+    class="box" onclick="addLetter('ㅖ')">ㅖ</span><span
+    class="box" onclick="addLetter('ㅘ')">ㅘ</span><span
+    class="box" onclick="addLetter('ㅙ')">ㅙ</span><span
+    class="box" onclick="addLetter('ㅚ')">ㅚ</span><span
+    class="box" onclick="addLetter('ㅝ')">ㅝ</span><span
+    class="box" onclick="addLetter('ㅞ')">ㅞ</span><span
+    class="box" onclick="addLetter('ㅟ')">ㅟ</span><span
+    class="box" onclick="addLetter('ㅢ')">ㅢ</span>
+    </p>
+</div>
+
+
+<p id="feedback">&nbsp;</p>
+
+<p>
+<input type="button" id="next" value="Next Problem" onclick = "nextProblem();" />
+<input type="button" id="check" value="Check answer" onclick = "checkAnswer();" />
+<input type="button" id="showCorrect" value="Show answer" onclick = "showAnswer();" />
+</p>
+<p>
+<a href="kbdhow2.htm">Find out how to enter Korean words</a>
+
+<!-- navigation -->
+<div id="bottom">
+
+<div id="left">
+<a href="body.htm"><img src="pics/l_arrow.png" width="16" height="11" class="noborder" alt="(back)" />Parts of the Body</a>
+</div>
+
+<div id="middle">
+<a href="index.htm"><img src="pics/up_arrow.png" class="noborder" 
+    width="26" height="11" alt="(Menu)" />Main Index</a>
+</div>
+
+</div>
+<!-- end navigation -->
+
+</body>
+</html>
+

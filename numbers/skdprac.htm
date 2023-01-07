@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" type="text/css" media="screen" href="../kstyle.css" />
+<link rel="stylesheet" type="text/css" media="print" href="../kprintstyle.css" />
+<script type="text/javascript" src="../dhtml.js"></script>
+<script type="text/javascript" src="numutil.js"></script>
+<script type="text/javascript">
+// <![CDATA[
+var correctAnswer, maxProblem;
+var problemNumber;
+var nTries;
+var score;
+var congrats;
+var nextPageHref;
+var answeredOK;
+
+function showKorean(n)
+{
+    var pic;
+    var d;
+    var i, digit, pten;
+    var result;
+
+    d = document.getElementById("question");
+    result = "";
+    pten = 10000;
+    power = 4;
+    while(power >= 0)
+    {
+        digit = Math.floor(n / pten);
+        if (digit != 0)
+        {
+            if (digit > 1)
+            {
+                result += sinoOnes[digit];
+            }
+            if ((power > 0) ||(power == 0 && digit == 1))
+            {
+                result += powerStr[power];
+            }
+        }
+        power--;
+        n %= pten;
+        pten /= 10;
+    }
+    d.innerText = result;
+}
+
+function goProblem()
+{
+    var input = document.getElementById("input");
+    
+    answeredOK = false;
+    nTries = 0;
+    if (Math.random() > 0.200)
+    {
+        correctAnswer = 1 + Math.floor(Math.random() * 998)
+    }
+    else
+    {
+        correctAnswer = 1 + Math.floor(Math.random() * 99998);
+    }
+    setText("feedback", "\u00a0");
+    input.value = "";
+    setText("probNum", problemNumber + 1);
+    showKorean(correctAnswer);
+    if (problemNumber == maxProblem - 1)
+    {
+        document.getElementById("next").disabled = true;
+    }
+    input.focus();
+}
+
+
+function checkAnswer()
+{
+    var student;
+    var correct;
+    var studentCanonical;
+    var correctCanonical;
+    var i;
+    var c;
+    var input = document.getElementById("input");
+    
+    if (answeredOK ||(nTries >= 3))
+    {
+        return;
+    }
+
+    student = input.value;
+    /* strip out blanks */
+    studentCanonical = "";
+    for(i=0; i<student.length; i++)
+    {
+        c = student.charAt(i);
+        if (c >= "0" && c <= "9")
+        {
+            studentCanonical += c;
+        }
+    }
+    if ((studentCanonical != "") &&(parseInt(studentCanonical) == correctAnswer))
+    {
+        score++;
+        setText("score", score);
+        setText("feedback", 
+            congrats[Math.floor(Math.random() * congrats.length)]);
+        answeredOK = true;
+    }
+    else if (studentCanonical != "")
+    {
+        nTries++;
+        if (nTries == 3)
+        {
+            setText("feedback",
+                "The correct answer is " + correctAnswer + ".");
+            input.value = "";
+        }
+        else
+        {
+            setText("feedback", "Sorry, \"" + student + "\" isn't right.");
+            input.value = "";
+            input.focus();
+        }
+    }
+    else {
+        setText("feedback", "Please enter a number.");
+    }
+}
+
+function initialize()
+{
+    maxProblem = 20;
+    problemNumber = 0;
+    setText("maxProb", maxProblem);
+    nextPageHref = "numindex.htm";
+    goProblem();
+}
+// ]]>
+</script>
+<title>Sino-Korean Numbers to Digits</title>
+</head>
+
+<body onload="setup();">
+<div id="question" class="k">&nbsp;</div>
+
+<noscript>
+<hr />
+<p>You must have Javascript enabled for this page to work properly.</p>
+<hr />
+</noscript>
+<form id="inputForm" onsubmit="checkAnswer(); return false;"
+    action="#">
+<p>Enter the digits for the Sino-Korean number:
+<input type="text" id="input" size="15" />
+<input type="button" id="check" value="Check Answer"
+    onclick="checkAnswer()" />
+</p>
+
+</form>
+
+<p id="feedback">&nbsp;</p>
+
+<p>
+Problem <span id="probNum">1</span> of
+    <span id="maxProb">0</span>.
+Your score: <span id="score">0</span>
+</p>
+
+<form id="infoForm" action="#">
+<p>
+<input type="button" id="next" value="Next Problem"
+    onclick="nextProblem()" />
+<input type="button" id="index" value="Back to Index"
+    onclick="top.location.href='numindex.htm'" />
+</p>
+</form>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" type="text/css" media="screen" href="../kstyle.css" />
+<link rel="stylesheet" type="text/css" media="print" href="../kprintstyle.css" />
+<title>Auto-Conjugator Entry Frame</title>
+</head>
+
+<body>
+<form name="entry">
+<table>
+<tr>
+<td>
+    <table>
+    <tr valign="top">
+    <td><b>Verb</b></td>
+    <td>
+        <table>
+        <tr class="centered"><td><input type="radio" name="verb" value="0"
+            checked onClick="top.SetVerb(0)"><!-- k(ka-da) --><span class="k">가다</span>
+        
+        <br>to go</td>
+        <td width="5"></td>
+        <td><input type="radio" name="verb" value="1"
+             onClick="top.SetVerb(1)"><!-- k(po-da) --><span class="k">보다</span>
+        <br>
+        to see</td>
+        <td width="5"></td>
+        <td><input type="radio" name="verb" value="2"
+             onClick="top.SetVerb(2)"><!-- k(pae-@u-da) --><span class="k">배우다</span>
+        
+        <br>to learn</td>
+        <td width="5"></td>
+        <td><input type="radio" name="verb" value="3"
+             onClick="top.SetVerb(3)"><!-- k(@irk-da) --><span class="k">읽다</span>
+        
+        <br>to read</td>
+        </tr>
+        <tr>
+        <td><input type="radio" name="verb" value="4"
+             onClick="top.SetVerb(4)"><!-- k(@iss-da) --><span class="k">있다</span>
+        <br>
+        to have</td>
+        <td width="5"></td>
+        <td><input type="radio" name="verb" value="5"
+             onClick="top.SetVerb(5)"><!-- k(@eops-da) --><span class="k">없다</span>
+        <br>
+        to not have</td>
+        <td width="5"></td>
+        <td><input type="radio" name="verb" value="6"
+             onClick="top.SetVerb(6)"><!-- k(ta-ni-da) --><span class="k">다니다</span>
+        <br>to attend</td>
+        <td width="5"></td>
+        <td><input type="radio" name="verb" value="7"
+             onClick="top.SetVerb(7)"><!-- k(ha-da) --><span class="k">하다</span>
+        <br>to do</td>
+        </tr>
+        </table>
+    </td>
+    </tr>
+    </table>
+    <b>Tense:</b> &nbsp; <input type="radio" name="tense" value="0" checked
+             onClick="top.SetTense(0)"> Present
+    <input type="radio" name="tense" value="1"
+             onClick="top.SetTense(1)"> Past
+    <input type="radio" name="tense" value="2"
+             onClick="top.SetTense(2)"> Future
+    <br>
+    <b>Style:</b> &nbsp; <input type="radio" name="style" value="0" checked
+        onClick="top.SetStyle(0)"> Polite Formal
+    <input type="radio" name="style" value="1"
+        onClick="top.SetStyle(1)"> Polite Informal
+    <br>
+    <input type="button" name="show" onClick="top.SetShow(0)"
+        value="Show Steps">
+    <input type="button" name="show" value="Show Just the Result"
+             onClick="top.SetShow(1)">
+</td>
+<td>
+<div class="centered">
+<a href="preauto.htm"
+    target="_top"><img src="../pics/back.png" class="noborder" alt="Back" width="24" height="24" /></a>
+<a href="grammar.htm"
+    target="_top"><img src="../pics/up.png" class="noborder" alt="(Menu)" width="24" height="24" /></a>
+</div>
+</td>
+</tr>
+</table>
+</form>
+</body>
+</html>
+
+

@@ -1,0 +1,13 @@
+#titlediv{
+    background-image: url("klogo.png");
+    background-repeat: no-repeat;
+    padding-left: 50px;
+}
+
+.sidebar {
+    width: 33%;
+    float: right;
+    border: 1px solid black;
+    padding: 0.25em;
+    margin: 0.25em;
+}

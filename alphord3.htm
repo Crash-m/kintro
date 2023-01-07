@@ -1,0 +1,186 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" type="text/css" media="screen" href="kstyle.css" />
+<link rel="stylesheet" type="text/css" media="print" href="kprintstyle.css" />
+<style type="text/css">
+.k {
+    cursor:default;
+}
+</style>
+
+<title>Vowel Alphabetical Order Game</title>
+<script type="text/javascript">
+// <![CDATA[
+ 
+var order, nextLetter;
+var l_map = new Array( 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42,
+    43, 44, 45, 46, 47, 48, 49, 50, 51);
+var maxLetter = 21;
+
+function giveHint( )
+{
+    var i, str, ltr;
+    
+    if (nextLetter >= maxLetter)
+    {
+        return;
+    }
+    for (i=0; i<maxLetter && order[i] != nextLetter; i++)
+    {
+        // do nothing
+    }
+    i++;
+    ltr = document.getElementById( "b" + i );
+    ltr.className = "k attention";
+}
+
+function klik( n )
+{
+    var str, i, ltr, ltr2;
+
+    if (order[n-1] == nextLetter)
+    {
+        ltr = document.getElementById( "b" + n );
+        ltr.innerText = String.fromCharCode(0x3000); // ideographic space
+
+        i = nextLetter+1;
+        ltr2 = document.getElementById( "t" + i );
+        ltr2.innerText = String.fromCharCode(0x3130 + l_map[nextLetter]);
+
+        nextLetter++;
+        if (nextLetter == maxLetter)
+        {
+            document.getElementById("feedback").innerText =
+                "You got them all in order! " +
+                "Click \"New Game\" to play again.";
+        }
+    }
+}
+
+function startGame()
+{
+    var i, j, k, str, ltr;
+
+    order = new Array( maxLetter );
+    nextLetter = 0;
+
+    for (i=0; i<maxLetter; i++)
+    {
+        order[i] = i;
+    }
+    for (i=0; i<maxLetter; i++)
+    {
+        j = Math.floor(Math.random() * maxLetter);
+        k = order[i];
+        order[i] = order[j];
+        order[j] = k;
+    }
+    for (i=1; i<maxLetter+1; i++)
+    {
+        ltr = document.getElementById( "b" + i );
+        ltr.innerText = String.fromCharCode(0x3130 + l_map[order[i - 1]]);
+        ltr.setAttribute("class", "k");
+    }
+    document.getElementById("feedback").innerText = "\u00a0";
+}
+
+function restart()
+{
+    var i, ltr;
+
+    for (i=1; i<maxLetter+1; i++)
+    {
+        ltr = document.getElementById("t" + i);
+        ltr.innerText = String.fromCharCode(0x3000);
+    }
+    startGame();
+}
+
+// ]]>
+</script>
+</head>
+
+<body onload = "startGame()">
+<h2>Vowel Alphabetical Order Game</h2>
+<p>
+<span class="bordered k" id="t1">&#x3000;</span>
+<span class="bordered k" id="t2">&#x3000;</span>
+<span class="bordered k" id="t3">&#x3000;</span>
+<span class="bordered k" id="t4">&#x3000;</span>
+<span class="bordered k" id="t5">&#x3000;</span>
+<span class="bordered k" id="t6">&#x3000;</span>
+<span class="bordered k" id="t7">&#x3000;</span>
+<span class="bordered k" id="t8">&#x3000;</span>
+<span class="bordered k" id="t9">&#x3000;</span>
+<span class="bordered k" id="t10">&#x3000;</span>
+<span class="bordered k" id="t11">&#x3000;</span>
+<span class="bordered k" id="t12">&#x3000;</span>
+<span class="bordered k" id="t13">&#x3000;</span>
+<span class="bordered k" id="t14">&#x3000;</span>
+<span class="bordered k" id="t15">&#x3000;</span>
+<span class="bordered k" id="t16">&#x3000;</span>
+<span class="bordered k" id="t17">&#x3000;</span>
+<span class="bordered k" id="t18">&#x3000;</span>
+<span class="bordered k" id="t19">&#x3000;</span>
+<span class="bordered k" id="t20">&#x3000;</span>
+<span class="bordered k" id="t21">&#x3000;</span>
+</p>
+<hr />
+<p>
+<span class="k" id="b1" onclick="klik(1)">&#x3000;</span>
+<span class="k" id="b2" onclick="klik(2)">&#x3000;</span>
+<span class="k" id="b3" onclick="klik(3)">&#x3000;</span>
+<span class="k" id="b4" onclick="klik(4)">&#x3000;</span>
+<span class="k" id="b5" onclick="klik(5)">&#x3000;</span>
+<span class="k" id="b6" onclick="klik(6)">&#x3000;</span>
+<span class="k" id="b7" onclick="klik(7)">&#x3000;</span>
+<span class="k" id="b8" onclick="klik(8)">&#x3000;</span>
+<span class="k" id="b9" onclick="klik(9)">&#x3000;</span>
+<span class="k" id="b10" onclick="klik(10)">&#x3000;</span>
+<span class="k" id="b11" onclick="klik(11)">&#x3000;</span>
+<span class="k" id="b12" onclick="klik(12)">&#x3000;</span>
+<span class="k" id="b13" onclick="klik(13)">&#x3000;</span>
+<span class="k" id="b14" onclick="klik(14)">&#x3000;</span>
+<span class="k" id="b15" onclick="klik(15)">&#x3000;</span>
+<span class="k" id="b16" onclick="klik(16)">&#x3000;</span>
+<span class="k" id="b17" onclick="klik(17)">&#x3000;</span>
+<span class="k" id="b18" onclick="klik(18)">&#x3000;</span>
+<span class="k" id="b19" onclick="klik(19)">&#x3000;</span>
+<span class="k" id="b20" onclick="klik(20)">&#x3000;</span>
+<span class="k" id="b21" onclick="klik(21)">&#x3000;</span>
+
+</p>
+<form id="exform" action="#">
+<p>
+Click the vowels in alphabetical order to move them up to the boxes in the
+upper row. If you're stuck, click the Hint button to highlight the correct
+letter. Remember: vertical lines get added before horizontal lines.
+</p>
+<p id="feedback">&#160;</p>
+<p>
+<input type="button" onclick="giveHint();" value="Hint" />
+<input type="button" onclick="restart();" value="New Game" />
+</p>
+</form>
+
+<!-- navigation -->
+<div id="bottom">
+
+<div id="left">
+<a href="alphord.htm"><img src="pics/l_arrow.png" width="16" height="11" class="noborder" alt="(back)" />Alphabetical Order</a>
+</div>
+
+<div id="middle">
+<a href="toc.htm"><img src="pics/up_arrow.png" class="noborder" 
+    width="26" height="11" alt="(Menu)" />Table of Contents</a>
+</div>
+
+</div>
+<!-- end navigation -->
+
+
+</body>
+</html>

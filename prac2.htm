@@ -1,0 +1,287 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" type="text/css" media="screen" href="kstyle.css" />
+<link rel="stylesheet" type="text/css" media="print" href="kprintstyle.css" />
+<script type="text/javascript" src="dhtml.js"></script>
+<script type="text/javascript">
+// <![CDATA[
+var klist, rlist, elist;
+var order, maxProblem;
+var problemNumber;
+var nTries;
+var score;
+var congrats;
+var nextPageHref;
+var checked;
+
+function setup()
+{
+    checked = false;
+    problemNumber = 0;
+    score = 0;
+    nTries = 0;
+    initialize();
+    congrats = new Array(
+        "Yes, that's it.",
+        "Quite right!",
+        "That's exactly it.",
+        "Very good.",
+        "You got it right.",
+        "Excellent.",
+        "Good work.");
+}
+
+/*********************************************************************
+    mixes up n elements of nArray starting at element startAt
+**********************************************************************/
+function shuffle(nArray, startAt, n)
+{
+    var i, j, swap;
+    
+    for (i = startAt; i < startAt + n; i++)
+    {
+        j = startAt + Math.round(Math.random() * (n - 1));
+        swap = nArray[i];
+        nArray[i] = nArray[j];
+        nArray[j] = swap;
+    }
+}
+
+function showSyllables(str, estr)
+{
+    if (estr != '') {
+        estr = '[' + estr + ']';
+    }
+    else {
+        estr = '\u00a0';
+    }
+    document.getElementById("problem").innerText = str;
+    document.getElementById("translation").innerText = estr;
+}
+
+function goProblem()
+{
+    var n;
+    var doc;
+    var infoForm, inputForm;
+    
+    nTries = 0;
+    checked = false;
+    n = order[problemNumber];
+    doc = document;
+    
+    inputForm = doc.getElementById("inputForm");
+    dynamicText("feedback", "");
+    inputForm.input.value = "";
+    dynamicText("probNum", problemNumber + 1);
+    showSyllables(klist[n], elist[n]);
+    inputForm.input.focus();
+}
+
+function nextProblem()
+{
+
+    problemNumber++;
+    if (problemNumber == maxProblem)
+    {
+        top.location.href = nextPageHref;
+    }
+    else
+    {
+        goProblem();
+    }
+}
+
+function checkAnswer()
+{
+    var student;
+    var correct;
+    var studentCanonical;
+    var correctCanonical;
+    var i;
+    var c;
+    var doc;
+    var input, scoreArea, feedback;
+    
+    if (nTries >= 3 || checked)
+    {
+        return;
+    }
+
+    input = document.getElementById("input");
+    scoreArea = document.getElementById("score");
+    feedback = document.getElementById("feedback");
+    
+    correct = rlist[order[problemNumber]].toLowerCase();
+
+    student = input.value.toLowerCase();
+    /* strip out blanks */
+    studentCanonical = student.replace(/[^a-zA-Z]/g, '');
+    correctCanonical = correct.replace(/[^a-zA-Z]/g, '');
+    if (studentCanonical == correctCanonical)
+    {
+        if (nTries < 2)
+        {
+            score++;
+            dynamicText("score", score);
+        }
+        dynamicText("feedback", 
+            congrats[Math.floor(Math.random() * congrats.length)]);
+        checked = true;
+    }
+    else if (studentCanonical != "")
+    {
+        nTries++;
+        dynamicText("feedback",
+            "Sorry, \"" + student + "\" isn’t right. " +
+            "The correct answer is \"" + rlist[order[problemNumber]]
+            + "\".");
+        input.value = "";
+        input.focus();
+    }
+}
+
+function initialize()
+{
+    var i;
+
+    maxProblem = 10;
+    nextPageHref = "sndshft.htm";
+    klist = [
+        "김", // kim
+        "뇨", // nyo
+        "허", // heo
+        "음", // @eum
+        "윤", // @yun
+        "먀", // mya
+        "녀", // nyeo
+        "오이", // @o-@i
+        "무", // mu
+        "우유", // @u-@yu
+        "뉴욕", // nyu-@yok
+        "면", // myeon
+        "나이", // na-i
+        "어느", // @eo-neu
+        "이" // @i
+   ];
+    
+    rlist = [
+        "kim",
+        "nyo",
+        "heo",
+        "eum",
+        "yun",
+        "mya",
+        "nyeo",
+        "o-i",
+        "mu",
+        "u-yu",
+        "nyu-yok",
+        "myeon",
+        "na-i",
+        "eo-neu",
+        "i"
+   ];
+    
+    elist = [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "cucumber",
+        "radish",
+        "milk",
+        "New York",
+        "cotton (fabric)",
+        "age",
+        "which",
+        "two (Chinese/Korean number)"
+   ];
+    
+    order = new Array(klist.length);
+    for (i=0; i<order.length; i++)
+    {
+        order[i] = i;
+    }
+    shuffle(order, 0, order.length);
+    console.log(order);
+    problemNumber = 0;
+    dynamicText("maxProb", maxProblem);
+    goProblem();
+}
+// ]]> 
+</script>
+<title>Practice #2</title>
+</head>
+
+<body onload="setup();">
+<div class="centered">
+<span class="k" id="problem">&#160;</span><br />
+<span id="translation">&#160;</span>
+</div>
+<noscript>
+<hr />
+<p>
+You must have Javascript enabled for this page to work properly.
+</p>
+<hr />
+</noscript>
+<form id="inputForm" onsubmit="checkAnswer(); return false"
+    action="#">
+<p>
+The area above shows Korean syllables. (If the syllables form an English word,
+it is shown beneath the Korean).
+</p>
+<p>
+Enter the romanized version of the Korean here:
+<input type="text" id="input" size="15" />
+<input type="button" id="check" value="Check Answer"
+    onclick="checkAnswer()" />
+</p>
+</form>
+
+<form id="infoForm" action="#">
+<p id="feedback">&nbsp;</p>
+<p>
+Problem <span id="probNum">1</span> of
+    <span id="maxProb">&nbsp;</span>.
+Your score: <span id="score">0</span>
+</p>
+
+<p>
+<input type="button" id="next" value="Next Problem"
+    onclick="nextProblem()" />
+</p>
+</form>
+<hr/>
+<p>
+Click "Next Problem" above to get new problems. When you're ready to move on,
+click below.
+</p>
+
+<!-- navigation -->
+<div id="bottom">
+
+<div id="left">
+<a href="smpvowel.htm"><img src="pics/l_arrow.png" width="16" height="11" class="noborder" alt="(back)" />Simple vowel summary</a>
+</div>
+
+<div id="middle">
+<a href="toc.htm"><img src="pics/up_arrow.png" class="noborder" 
+    width="26" height="11" alt="(Menu)" />Table of Contents</a>
+</div>
+
+<div id="right">
+<a href="sndshft.htm">Shifting Sounds <img src="pics/r_arrow.png" class="noborder" width="16" height="11" alt="(next)" /></a>
+</div>
+
+</div>
+<!-- end navigation -->
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" type="text/css" media="screen" href="../kstyle.css" />
+<link rel="stylesheet" type="text/css" media="print" href="../kprintstyle.css" />
+<title>Verbs of Motion and Existence</title>
+<script type="text/javascript" src="../dhtml.js"></script>
+<script type="text/javascript">
+// <![CDATA[
+var engWord = new Array
+(
+    "to go",
+    "to come",
+    "to ride",
+    "to wait",
+    "to be (equivalent to)", 
+    "to exist",
+    "to not be (equivalent to)",
+    "to not exist"
+);
+
+function setText(id, txt)
+{
+    document.getElementById(id).innerText = txt;
+}
+
+function display(n)
+{
+    setText("english", engWord[n]);
+}
+
+function undisplay()
+{
+    setText("english", "\u00a0");
+}
+
+// ]]>
+</script>
+</head>
+
+<body>
+
+<h1 class="center">Verbs of Motion and Existence</h1>
+
+<noscript>
+<hr />
+<p>You must have Javascript enabled for this page to work properly.</p>
+<hr />
+</noscript>
+
+<p>
+Move your mouse over a Korean word to see its translation below.
+</p>
+
+<table class="noborder" cellspacing="10">
+<tr>
+<td>
+<span class="k" onmouseover="display(0);"
+    onmouseout="undisplay();">가다</span>
+<br />
+<span class="k" onmouseover="display(1);"
+    onmouseout="undisplay();">오다</span>
+<br />
+<span class="k" onmouseover="display(2);"
+    onmouseout="undisplay();">타다</span>
+<br />
+<span class="k" onmouseover="display(3);"
+    onmouseout="undisplay();">기디리다</span>
+</td>
+
+<td>
+<span class="k" onmouseover="display(4);"
+    onmouseout="undisplay();">이다</span>
+<br />
+<span class="k" onmouseover="display(5);"
+    onmouseout="undisplay();">있다</span>
+<br />
+<span class="k" onmouseover="display(6);"
+    onmouseout="undisplay();">아니다</span>
+<br />
+<span class="k" onmouseover="display(7);"
+    onmouseout="undisplay();">없다</span>
+</td>
+</tr>
+</table>
+
+<p class="bordered padded">Translation: 
+<span id="english">&nbsp;</span>
+</p>
+
+
+<p>
+Note: The verbs <span class="k">이다</span>
+and
+<span class="k">아니다</span>
+are used in sentences like &#8220;Sally is a doctor.&#8221; and
+&#8220;Fred is not a teacher.&#8221;
+</p>
+
+<p>
+The verbs <span class="k">있다</span>
+and <span class="k">없다</span>
+are used in sentences like &#8220;The book is on the table.&#8221; and
+&#8220;There is no dog here.&#8221;
+</p>
+
+<!-- navigation -->
+<div id="bottom">
+
+<div id="left">
+<a href="verb1.htm"><img src="../pics/l_arrow.png" width="16" height="11" class="noborder" alt="(back)" />Intellectual Activity</a>
+</div>
+
+<div id="middle">
+<a href="vocab.htm"><img src="../pics/up_arrow.png" class="noborder" 
+    width="26" height="11" alt="(Menu)" />Vocabulary Index</a>
+</div>
+
+<div id="right">
+<a href="verb3.htm">Everyday Activities<img src="../pics/r_arrow.png" class="noborder" width="16" height="11" alt="(next)" /></a>
+</div>
+
+</div>
+<!-- end navigation -->
+
+
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<title>Uncles and Aunts - The Big Picture</title>
+<link rel="stylesheet" type="text/css" media="screen" href="../kstyle.css" />
+<link rel="stylesheet" type="text/css" media="print" href="../kprintstyle.css" />
+<script type="text/javascript">
+// <![CDATA[
+var korean = [
+    "너",
+    "큰아버지",
+    "큰어머니",
+    "삼촌",
+    "작은아버지",
+    "작은어머니",
+    "고모",
+    "고모부",
+    "외삼촌",
+    "외숙모",
+    "이모",
+    "이모부"];
+
+var english = [
+    "you [you are here]",
+    "father’s older married brother",
+    "father’s older married brother’s wife",
+    "father’s unmarried brother",
+    "father’s younger married brother",
+    "father’s younger married brother’s wife",
+    "father’s sister",
+    "father’s sister’s husband",
+    "mother’s brother", 
+    "mother’s brother’s wife",
+    "mother’s sister",
+    "mother’s sister’s husband",
+];
+
+function doNull()
+{
+}
+
+function showWord(n)
+{
+    kw = document.getElementById("kword");
+    ew = document.getElementById("eword");
+    if (n < 0)
+    {
+        kw.innerText = "\u00a0";
+        ew.innerText = "\u00a0";
+    }
+    else
+    {
+        kw.innerText = korean[n];
+        ew.innerText = english[n];
+    }
+}
+// ]]>
+</script>
+</head>
+
+<body>
+<noscript>
+<hr />
+<p>You must have Javascript enabled for this page to work properly.</p>
+<hr />
+</noscript>
+
+<div style="margin-left: 2em">
+<object type="image/svg+xml" data="uncles_aunts.svg" id="diagram">
+  Diagram of uncles and aunts <!-- fallback image in CSS -->
+</object>
+
+</div>
+<p>Korean: <span id="kword" class="k">&#160;</span></p>
+<p>English: <span id="eword">&#160;</span></p>
+
+<p>
+As you move the mouse over a word, you will see the word and its definition in
+English. When you're ready, go to the next
+page for a multiple choice quiz.
+
+<map name="unc_aunt" id="unc_aunt">
+<area shape="rect" coords="87,1,150,63" href="javascript:doNull()"
+    onmouseover="showWord(0)" onmouseout="showWord(-1)"
+    alt="father's older married brother" />
+<area shape="rect" coords="20,1,82,64" href="javascript:doNull()"
+    onmouseover="showWord(1)" onmouseout="showWord(-1)"
+    alt="father's older married brother's wife" />
+<area shape="rect" coords="86,80,144,142" href="javascript:doNull()"
+    onmouseover="showWord(2)" onmouseout="showWord(-1)"
+    alt="father's unmarried brother" />
+<area shape="rect" coords="80,151,158,199" href="javascript:doNull()"
+    onmouseover="showWord(3)" onmouseout="showWord(-1)"
+    alt="father's younger married brother" />
+<area shape="rect" coords="1,152,72,198" href="javascript:doNull()"
+    onmouseover="showWord(4)" onmouseout="showWord(-1)"
+    alt="father's younger married brother's wife" />
+<area shape="rect" coords="85,212,149,274" href="javascript:doNull()"
+    onmouseover="showWord(5)" onmouseout="showWord(-1)"
+    alt="father's sister" />
+<area shape="rect" coords="23,210,75,275" href="javascript:doNull()"
+    onmouseover="showWord(6)" onmouseout="showWord(-1)"
+    alt="father's sister's husand" />
+<area shape="rect" coords="298,46,354,104" href="javascript:doNull()"
+    onmouseover="showWord(7)" onmouseout="showWord(-1)"
+    alt="mother's brother" />
+<area shape="rect" coords="369,44,434,105" href="javascript:doNull()"
+    onmouseover="showWord(8)" onmouseout="showWord(-1)"
+    alt="mother's brother's wife" />
+<area shape="rect" coords="295,109,358,169" href="javascript:doNull()"
+    onmouseover="showWord(9)" onmouseout="showWord(-1)"
+    alt="mother's sister" />
+<area shape="rect" coords="369,110,429,171" href="javascript:doNull()"
+    onmouseover="showWord(10)" onmouseout="showWord(-1)"
+    alt="mother's sister's husband" />
+<area shape="rect" coords="204,149,246,185" href="javascript:doNull()" onmouseover="showWord(11)" onmouseout="showWord(-1)"
+    alt="This is you." />
+<area shape="default" nohref="nohref" alt="" />
+</map>
+
+</p>
+
+<!-- navigation -->
+<div id="bottom">
+
+<div id="left">
+<a href="unc_aunt.htm"><img src="../pics/l_arrow.png" width="16" height="11" class="noborder" alt="(back)" />Uncles and Aunts</a>
+</div>
+
+<div id="middle">
+<a href="../index.htm"><img src="../pics/up_arrow.png" class="noborder" 
+    width="26" height="11" alt="(Menu)" />Main Index</a>
+</div>
+
+<div id="right">
+<a href="fquiz2.htm">Family Quiz 2<img src="../pics/r_arrow.png" class="noborder" width="16" height="11" alt="(next)" /></a>
+</div>
+
+</div>
+<!-- end navigation -->
+
+
+</body>
+</html>

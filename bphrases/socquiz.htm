@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" type="text/css" media="screen" href="../kstyle.css" />
+<link rel="stylesheet" type="text/css" media="print" href="../kprintstyle.css" />
+<title>Politeness Phrases Quiz</title>
+<script type="text/javascript" src="../playsnd.v2.1.js"></script>
+<script type="text/javascript" src="../driver.js"></script>
+<script type="text/javascript">
+var questions = [
+    "You ask a person to loan you a pencil. When they give it to you, you say:",
+    "Someone thanks you for helping them. You say:",
+    "You bump into someone and they drop a package they are carrying. You say:",
+    "Someone apologizes for bumping into you. You say:",
+    "You reach across a table to get a salt shaker. You say:"];
+
+function showProblem() {
+    var inputs = document.getElementsByName("answer");
+    var check = document.getElementById("check");
+    for (var i = 0; i < inputs.length; i++) {
+        inputs[i].checked = false;
+        document.getElementById("choice" + i).style.color="black";
+    }
+    document.getElementById("question").innerHTML = questions[order[problemNumber]];
+    document.getElementById("feedback").innerHTML = "\u00a0";
+    check.onclick = checkAnswer;
+    check.value = "Check Answer";
+    nTries = 0;
+}
+
+function judgeCorrect() {
+    var result = document.querySelector('input[name="answer"]:checked');
+    if (result) {
+        result = result.value;
+    }
+    return (result == order[problemNumber]);
+}
+
+function giveFeedback() {
+    var el = document.getElementById("feedback");
+    var check = document.getElementById("check");
+    if (correctAnswer) {
+        el.innerText = randomPositiveFeedback();
+    } else {
+        el.innerText = "Sorry, that’s not correct.";
+        document.getElementById("choice" + order[problemNumber]).style.color = "#080";
+    }
+    problemNumber++;
+    if (problemNumber < maxProblem) {
+        check.value = "Next Problem";
+        check.onclick = showProblem;
+    } else {
+        check.disabled = true;
+    }
+    
+}
+
+function init() {
+    maxTries = 1;
+    maxProblem = 5;
+    setupDriver();
+}
+
+</script>
+</head>
+
+<body onload="init()">
+<h1>Politeness Phrases Quiz</h1>
+<noscript>
+<hr />
+<p>You must have Javascript enabled in order to hear sounds on this page.</p>
+<hr />
+</noscript>
+
+<p id="question"></p>
+
+<form name="answerForm">
+<p>
+<input type="radio" name="answer" value="0"> <span class="k" id="choice0">감사합니다.</span>
+<button onclick="playSound('../snd/thanks');">
+<img class="speaker" alt="Play" src="../pics/speaker.png" />
+</button>
+<br />
+
+<input type="radio" name="answer" value="1"> <span class="k" id="choice1">천만에요.</span>
+<button onclick="playSound('../snd/welcome');">
+<img class="speaker" alt="Play" src="../pics/speaker.png" />
+</button>
+<br />
+
+<input type="radio" name="answer" value="2"> <span class="k" id="choice2">죄송합니다.</span>
+<button onclick="playSound('../snd/sorry1');">
+<img class="speaker" alt="Play" src="../pics/speaker.png" />
+</button>
+<br />
+
+<input type="radio" name="answer" value="3"> <span class="k" id="choice3">괜찮아요.</span>
+<button onclick="playSound('../snd/itsok');">
+<img class="speaker" alt="Play" src="../pics/speaker.png" />
+</button>
+<br />
+
+<input type="radio" name="answer" value="4"> <span class="k" id="choice4">실례합니다.</span>
+<button onclick="playSound('../snd/excuseme');">
+<img class="speaker" alt="Play" src="../pics/speaker.png" />
+</button>
+</p>
+
+<p>
+<input type="button" id="check" onclick="driver.checkAnswer()" value="Check Answer"/>
+</p>
+</form>
+
+<p id="feedback"></p>
+
+
+<!-- navigation -->
+<div id="bottom">
+
+<div id="left">
+<a href="social.htm">
+<img src="../pics/l_arrow.png" width="16" height="11" class="noborder" alt="(back)" />Polite Phrases</a>
+</div>
+
+<div id="middle">
+<a href="toc.htm">
+<img src="../pics/up_arrow.png" class="noborder" width="26" height="11" alt="(Menu)" />Table of Contents</a>
+</div>
+
+<div id="right">
+<a href="intro.htm">Introductions <img src="../pics/r_arrow.png" class="noborder" width="16" height="11" alt="(next)" />
+</a>
+</div>
+
+</div>
+<!-- end navigation -->
+
+<audio id="sound" src="snd/silent.wav" /> 
+
+</body>
+</html>

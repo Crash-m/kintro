@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" type="text/css" media="screen" href="kstyle.css" />
+<link rel="stylesheet" type="text/css" media="print" href="kprintstyle.css" />
+<title>The Placeholder</title>
+<script type="text/javascript" src="playsnd.v2.1.js">
+</script>
+</head>
+
+<body>
+<h1 class="attention">What’s the Problem?</h1>
+<p>
+We have a slight problem with one of our rules for
+writing syllables.
+What if we want to write the Korean word for afternoon, which is “ohu”?
+If we split it into syllables, <strong>o-hu</strong>,
+we see that the first syllable begins with a vowel,
+and that violates rule 1, which says that all syllables begin with a consonant.
+</p>
+<p>
+To solve this problem, Korean uses this letter: <span class="k">ㅇ</span>.
+When it starts a syllable, it is a <strong>silent</strong> placeholder consonant.
+</p>
+<p>
+This lets us write <strong>o-hu</strong> as:
+<span class="k">오후</span>.
+The first syllable now begins with a consonant that doesn’t get pronounced.
+<button onclick="playSound('snd/ohu');">
+<img class="speaker" alt="Play" src="pics/speaker.png" />
+</button>
+</p>
+<p>
+Here are some other Korean words that use the placeholder:
+</p>
+<p>
+<button onclick="playSound('snd/an');">
+<img class="speaker" alt="Play" src="pics/speaker.png" />
+</button>
+<span class="k">안</span>,
+meaning <em>inside</em> and pronounced <strong>an</strong> (that’s the 
+<strong>ah</strong> sound for the vowel, remember?)
+</p>
+
+<p>
+<!-- k(@u) --><button onclick="playSound('snd/u');">
+<img class="speaker" alt="Play" src="pics/speaker.png" />
+</button>
+<span class="k">우</span>, meaning “right” (as in right-hand) and pronounced <strong>u</strong> 
+(that’s the <strong>u</strong> sound in J<strong>u</strong>ne).
+</p>
+
+<p>
+<!-- k(@u-@a) --><button onclick="playSound('snd/u_a');">
+<img class="speaker" alt="Play" src="pics/speaker.png" />
+</button>
+<span class="k">우아</span>, meaning “grace, suavity,” and
+<!-- k(man-@an) --><button onclick="playSound('snd/manan');">
+<img class="speaker" alt="Play" src="pics/speaker.png" />
+</button>
+<span class="k">만</span>
+<span class="k">안</span>, meaning “peace” or “well-being.”
+</p>
+<div class="centered">
+<h2 style="color:green;">Now...it’s your turn to practice!</h2>
+<p>
+(You may wish to <a href="revu1.htm">see a review sheet</a> first.)
+</p>
+</div>
+
+<!-- navigation -->
+<div id="bottom">
+
+<div id="left">
+<a href="stack.htm">
+<img src="pics/l_arrow.png" width="16" height="11" class="noborder" alt="(back)" />Stacking Rules</a>
+</div>
+
+<div id="middle">
+<a href="toc.htm">
+<img src="pics/up_arrow.png" class="noborder" width="26" height="11" alt="(Menu)" />Table of Contents</a>
+</div>
+
+<div id="right">
+<a href="prac1.htm">Practice #1 <img src="pics/r_arrow.png" class="noborder" width="16" height="11" alt="(next)" />
+</a>
+</div>
+
+</div>
+<!-- end navigation -->
+
+<audio id="sound" src="snd/silent.wav" /> 
+
+</body>
+</html>

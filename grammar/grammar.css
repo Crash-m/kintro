@@ -1,0 +1,6 @@
+.subject { color: red; }
+.object { color: #008000; }
+.particle { color: gray; }
+.ending {color: purple;}
+.honorific {color: rgb( 0, 139, 139);}
+.vowel {color: rgb(255, 140, 0) }

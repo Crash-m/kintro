@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" type="text/css" media="screen" href="../kstyle.css" />
+<link rel="stylesheet" type="text/css" media="print" href="../kprintstyle.css" />
+<title>Nouns at the Table</title>
+<script type="text/javascript" src="../playsnd.v2.1.js"></script>
+<script type="text/javascript">
+// <![CDATA[
+var engword = new Array(
+    "glass", "plate",
+    "chopsticks", "spoon",
+    "kimchi (pickled cabbage)", "kimbap (rice/seaweed/vegetables)"
+);
+// ]]>
+</script>
+<script type="text/javascript" src="vocabutil.js"></script>
+</head>
+
+<body>
+
+<h1 class="centered">Nouns at the Table</h1>
+
+<noscript>
+<hr />
+<p>You must have Javascript enabled for this page to work properly.</p>
+<hr />
+</noscript>
+
+<p>If you&#8217;re not sure what the picture is, move the mouse over it.
+Click the picture to hear the word spoken.</p>
+
+<table class="bordered-table">
+<tr align="center">
+<td>
+    <span class="k">잔</span><br />
+    <img src="../vocimg/glass.jpg"
+    class="noborder" width="100" height="136" alt="glass" 
+    onclick="playSound('../snd/vocsnd/glass')"
+    onmouseover = "xlate(0, 'glass')"
+    onmouseout="xlate(0, '\u00a0')" />
+    <div id="text0">&nbsp;</div></td>
+
+<td>
+    <span class="k">접시</span>
+    <br />
+    <img src="../vocimg/plate.jpg"
+    class="noborder" width="153" height="150" alt="plate"
+    onclick="playSound('../snd/vocsnd/plate')"
+    onmouseover = "xlate(1, 'plate')"
+    onmouseout="xlate(1, '\u00a0')" />
+    <div id="text1">&nbsp;</div></td>
+
+<td>
+    <span class="k">젓가락</span>
+    <br />
+    <img src="../vocimg/chopstk.jpg"
+    class="noborder" width="98" height="150" alt="chopsticks" 
+    onclick="playSound('../snd/vocsnd/chopstk')"
+    onmouseover = "xlate(2, 'chopsticks')"
+    onmouseout="xlate(2, '\u00a0')" />
+    <div id="text2">&nbsp;</div>
+</td>
+</tr>
+
+<tr style="text-align: center">
+<td>
+    <span class="k">숟가락</span>
+    <br />
+    <img src="../vocimg/spoon.jpg"
+    class="noborder" width="50" height="158" alt="spoon"
+    onclick="playSound('../snd/vocsnd/spoon')"
+    onmouseover = "xlate(3, 'spoon')";
+    onmouseout="xlate(3, '\u00a0')" />
+    <div id="text3">&nbsp;</div>
+</td>
+
+<td>
+    <span class="k">김치</span>
+    <br />
+    <img src="../vocimg/kimchi.jpg"
+    class="noborder" width="179" height="150" alt="kimchi"
+    onclick="playSound('../snd/vocsnd/kimchi')"
+    onmouseover = "xlate(4, 'kim-chi')";
+    onmouseout="xlate(4, '\u00a0')" />
+    <div id="text4">&nbsp;</div>
+</td>
+<td>
+    <span class="k">김밥</span>
+    <br />
+    <img src="../vocimg/kimbap.jpg"
+    class="noborder" width="288" height="150" alt="kimbap" onclick="playSound('../snd/vocsnd/kimbap')"
+    onmouseover = "xlate(5, 'kim-bap')";
+    onmouseout="xlate(5, '\u00a0')" />
+    <div id="text5">&nbsp;</div>
+</td>
+</tr>
+</table>
+
+<!-- navigation -->
+<div id="bottom">
+
+<div id="left">
+<a href="noun3.htm"><img src="../pics/l_arrow.png" width="16" height="11" class="noborder" alt="(back)" />Nouns for Places</a>
+</div>
+
+<div id="middle">
+<a href="vocab.htm"><img src="../pics/up_arrow.png" class="noborder" 
+    width="26" height="11" alt="(Menu)" />Vocabulary Index</a>
+</div>
+
+<div id="right">
+<a href="noundrl1.htm">Noun Drill<img src="../pics/r_arrow.png" class="noborder" width="16" height="11" alt="(next)" /></a>
+</div>
+
+</div>
+<!-- end navigation -->
+<audio id="sound" src="snd/silent.wav" /> 
+</body>
+</html>

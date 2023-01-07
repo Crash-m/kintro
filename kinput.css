@@ -1,0 +1,11 @@
+div.kbd p {
+    margin: 10px;
+}
+
+.box {
+    font-family: UnDotum;
+    font-size: 125%;
+    border: 1px solid black;
+    padding: 2px;
+    cursor: default;
+}

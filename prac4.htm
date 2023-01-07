@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" type="text/css" media="screen" href="kstyle.css" />
+<link rel="stylesheet" type="text/css" media="print" href="kprintstyle.css" />
+<style type="text/css">
+td {
+    padding-right: 2em;
+}
+</style>
+
+<title>Vowel Words Quiz</title>
+<script type="text/javascript">
+// <![CDATA[
+var korWord = [
+    "아래", // a-rae
+    "안에", // an-e
+    "여보세요", // yeo-bo-se-yo
+    "대사관", // tae-sa-gwan
+    "관광객", // kwan-gwang-gaek
+    "여행", // yeo-haeng
+    "배", // pae
+    "반액"  // paen-aek
+];
+
+var engWord = new Array(
+    "down", "in", "Hello (telephone)", "embassy", "tourist",
+    "trip", "ship", "half-fare"
+);
+
+var korOrder = new Array( 8 );
+var engOrder = new Array( 8 );
+var picNum = new Array( 10 );
+
+var maxProb = 5;
+
+/*********************************************************************
+    mixes up n elements of nArray starting at element startAt
+**********************************************************************/
+function shuffle(array, startAt, n) {
+  var t;
+  var i;
+
+  // While there remain elements to shuffle…
+  while (n > 0) {
+
+    // Pick a remaining element…
+    i = Math.floor(Math.random() * n--);
+
+    // And swap it with the current element.
+    t = array[startAt  + n];
+    array[startAt + n] = array[startAt + i];
+    array[startAt + i] = t;
+  }
+}
+
+function showProblems()
+{
+
+    var i, j, n, prob, pnum;
+    var doc, str, picname;
+
+    for (i=0; i<8; i++)
+    {
+        korOrder[i] = i;
+    }
+    shuffle(korOrder, 0, 8);
+    
+    for (i=0; i<maxProb; i++)
+    {
+        engOrder[i] = korOrder[i];
+    }
+    shuffle( engOrder, 0, maxProb );
+
+    for (prob=0; prob<maxProb; prob++)
+    {
+        document.getElementById("kor" + (prob + 1)).innerText = korWord[korOrder[prob]];
+        document.getElementById("eng" + (prob + 1)).innerText = engWord[engOrder[prob]];
+    }
+}
+
+function checkAnswers()
+{
+    var i;
+    var ok;
+    var estr;
+    var doc;
+    var qForm;
+
+    for (i=0; i<maxProb; i++)
+    {
+        ok = false;
+        n = parseInt(document.getElementById("ans" + (i+1)).value);
+        if ((! isNaN(n)) && n >= 1 && n<= maxProb )
+        {
+            if (engOrder[n-1] == korOrder[i])
+            {
+                ok = true;
+            }
+        }
+        if (ok)
+        {
+            estr = "pics/oksmall.png";
+        }
+        else
+        {
+            estr = "pics/badsmall.png";
+        }
+        document.getElementById("img" + (i+1)).src = estr;
+    }
+}
+// ]]>
+</script>
+</head>
+
+<body onload="showProblems()">
+
+<table>
+<tr>
+    <td><img src="pics/mtsmall.png" id="img1"
+        width="24" height="24" alt=""/> <input type="text" id="ans1" size="5">
+        <span class="k" id="kor1"></span></td>
+    <td> 1. <span id="eng1"></span></td>
+</tr>
+<tr>
+    <td><img src="pics/mtsmall.png" id="img2"
+        width="24" height="24" alt=""/> <input type="text" id="ans2" size="5">
+        <span class="k" id="kor2"></span></td>
+    <td> 2. <span id="eng2"></span></td>
+</tr>
+<tr>
+    <td><img src="pics/mtsmall.png" id="img3"
+        width="24" height="24" alt=""/> <input type="text" id="ans3" size="5">
+        <span class="k" id="kor3"></span></td>
+    <td> 3. <span id="eng3"></span></td>
+</tr>
+<tr>
+    <td><img src="pics/mtsmall.png" id="img4"
+        width="24" height="24" alt=""/> <input type="text" id="ans4" size="5">
+        <span class="k" id="kor4"></span></td>
+    <td> 4. <span id="eng4"></span></td>
+</tr>
+<tr>
+    <td><img src="pics/mtsmall.png" id="img5"
+        width="24" height="24" alt=""/> <input type="text" id="ans5" size="5">
+        <span class="k" id="kor5"></span></td>
+    <td> 5. <span id="eng5"></span></td>
+</tr>
+</table>
+
+<p>
+Type the number of the correct English word before each Korean word,
+then click the
+<input type="button" onclick="parent.checkAnswers();" value="Check Answers" /> 
+button to see if you’re right.
+</p>
+
+<!-- navigation -->
+<div id="bottom">
+
+<div id="left">
+<a href="vwlwords.htm" target="_top"><img src="pics/l_arrow.png" width="16" height="11" class="noborder" alt="(back)" />Words with Diphthongs</a>
+</div>
+
+<div id="middle">
+<a href="toc.htm" target="_top"><img src="pics/up_arrow.png" class="noborder" 
+    width="26" height="11" alt="(Menu)" />Table of Contents</a>
+</div>
+
+<div id="right">
+<a href="vwlend.htm" target="_top">Onwards to Consonants <img src="pics/r_arrow.png" class="noborder" width="16" height="11" alt="(next)" /></a>
+</div>
+
+</div>
+<!-- end navigation -->
+
+</body>
+
+</html>

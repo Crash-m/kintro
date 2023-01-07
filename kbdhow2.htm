@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" type="text/css" media="screen" href="kstyle.css" />
+<link rel="stylesheet" type="text/css" media="print" href="kprintstyle.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="kinput.css"/>
+<style type="text/css">
+<!--
+.border1 {
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+}
+-->
+</style>
+<title>How to Enter Korean Input</title>
+
+<script type="text/javascript" src="kinput.js">
+</script>
+
+</head>
+
+<body onload="initInput('', 'output', 6)">
+<noscript>
+<hr />
+<p>You must have Javascript enabled for this page to work properly.</p>
+<hr />
+</noscript>
+
+<h1>How to Enter Korean Input</h1>
+<p><a href="javascript:history.back()">Back to exercise</a></p>
+<p>
+Below you see a “mini-keyboard” that will let you enter Korean syllables.
+Just click the letters in the order you want them, and they will appear in the
+squares below. Try it out.
+</p>
+
+<p>You have typed: <span class="k" id="output"></p>
+
+<div class="kbd">
+<p>
+<span class="box" onclick="addLetter('ㄱ')">ㄱ</span><span
+    class="box" onclick="addLetter('ㄴ')">ㄴ</span><span
+    class="box" onclick="addLetter('ㄷ')">ㄷ</span><span
+    class="box" onclick="addLetter('ㄹ')">ㄹ</span><span
+    class="box" onclick="addLetter('ㅁ')">ㅁ</span><span
+    class="box" onclick="addLetter('ㅂ')">ㅂ</span><span
+    class="box" onclick="addLetter('ㅅ')">ㅅ</span><span
+    class="box" onclick="addLetter('ㅇ')">ㅇ</span><span
+    class="box" onclick="addLetter('ㅈ')">ㅈ</span><span
+    class="box" onclick="addLetter('ㅊ')">ㅊ</span><span
+    class="box" onclick="addLetter('ㅋ')">ㅋ</span><span
+    class="box" onclick="addLetter('ㅌ')">ㅌ</span><span
+    class="box" onclick="addLetter('ㅍ')">ㅍ</span><span
+    class="box" onclick="addLetter('ㅎ')">ㅎ</span><span
+    class="box" onclick="addLetter('ㄲ')">ㄲ</span><span
+    class="box" onclick="addLetter('ㄸ')">ㄸ</span><span
+    class="box" onclick="addLetter('ㅃ')">ㅃ</span><span
+    class="box" onclick="addLetter('ㅆ')">ㅆ</span><span
+    class="box" onclick="addLetter('ㅉ')">ㅉ<span>
+    </p>
+    
+    <p>
+    <span class="box" onclick="addLetter('ㄳ')">ㄳ</span><span
+    class="box" onclick="addLetter('ㄵ')">ㄵ</span><span
+    class="box" onclick="addLetter('ㄶ')">ㄶ</span><span
+    class="box" onclick="addLetter('ㄺ')">ㄺ</span><span
+    class="box" onclick="addLetter('ㄻ')">ㄻ</span><span
+    class="box" onclick="addLetter('ㄼ')">ㄼ</span><span
+    class="box" onclick="addLetter('ㄽ')">ㄽ</span><span
+    class="box" onclick="addLetter('ㄾ')">ㄾ</span><span
+    class="box" onclick="addLetter('ㄿ')">ㄿ</span><span
+    class="box" onclick="addLetter('ㅀ')">ㅀ</span><span
+    class="box" onclick="addLetter('ㅄ')">ㅄ</span>
+    &#160; &#160; <span
+    class="box" onclick="backspace()">&#8592;</span>
+    &#160;
+    <span class="box" style="font-family: sans-serif;"
+        onclick="forceSyllableEnd()"><span style="font-size: small">End syll</span></span>
+    <span class="box" style="font-family: sans-serif;"
+        onclick="resetInput()"><span style="font-size: small">Reset</span></span>
+    </p>
+    
+    <p>
+    <span class="box" onclick="addLetter('ㅏ')">ㅏ</span><span
+    class="box" onclick="addLetter('ㅑ')">ㅑ</span><span
+    class="box" onclick="addLetter('ㅓ')">ㅓ</span><span
+    class="box" onclick="addLetter('ㅕ')">ㅕ</span><span
+    class="box" onclick="addLetter('ㅗ')">ㅗ</span><span
+    class="box" onclick="addLetter('ㅛ')">ㅛ</span><span
+    class="box" onclick="addLetter('ㅜ')">ㅜ</span><span
+    class="box" onclick="addLetter('ㅠ')">ㅠ</span><span
+    class="box" onclick="addLetter('ㅡ')">ㅡ</span><span
+    class="box" onclick="addLetter('ㅣ')">ㅣ</span><span
+    class="box" onclick="addLetter('ㅐ')">ㅐ</span><span
+    class="box" onclick="addLetter('ㅒ')">ㅒ</span><span
+    class="box" onclick="addLetter('ㅔ')">ㅔ</span><span
+    class="box" onclick="addLetter('ㅖ')">ㅖ</span><span
+    class="box" onclick="addLetter('ㅘ')">ㅘ</span><span
+    class="box" onclick="addLetter('ㅙ')">ㅙ</span><span
+    class="box" onclick="addLetter('ㅚ')">ㅚ</span><span
+    class="box" onclick="addLetter('ㅝ')">ㅝ</span><span
+    class="box" onclick="addLetter('ㅞ')">ㅞ</span><span
+    class="box" onclick="addLetter('ㅟ')">ㅟ</span><span
+    class="box" onclick="addLetter('ㅢ')">ㅢ</pan>
+    </p>
+</div>
+
+<p>
+Note: there are three special keys. The first one is the backspace key:
+ <span
+    class="box" onclick="backspace()">&#8592;</span>.
+As you click it, it undoes the syllables
+you are building. 
+
+If you want to erase your entire entry, you just click the 
+<span class="box" style="font-family: sans-serif;"
+        onclick="resetInput()"><span style="font-size: small">Reset</span></span>
+key.
+</p>
+<p>
+The “end syllable” key:
+<span class="box" style="font-family: sans-serif;"
+        onclick="forceSyllableEnd()"><span style="font-size: small">End syll</span></span>
+tells the computer that you’re done with
+a syllable and are ready to move to the next one.
+</p>
+<p>
+Ordinarily you will not need this key; as you enter the syllables, the computer
+will figure out which vowels and consonants belong together. If you want to enter
+the word  <span class="k">하나</span>, you just click these keys:
+</p>
+<blockquote>
+<p>
+<span class="box" onclick="addLetter('ㅎ')">ㅎ</span>
+<span class="box" onclick="addLetter('ㅏ')">ㅏ</span>
+<span class="box" onclick="addLetter('ㄴ')">ㄴ</span>
+<span class="box" onclick="addLetter('ㅏ')">ㅏ</span>
+</p>
+</blockquote>
+
+<p>
+and the <span class="k">ㄴ</span>
+ will shift over to the second syllable as soon as you click the
+last <span class="k">ㅏ</span>.
+</p>
+
+<p>
+No computer method is perfect, though. If you are entering a word and a consonant
+will not shift over, or if it shifts when you don’t want it to, you can use the
+<span class="box" style="font-family: sans-serif;"
+        onclick="forceSyllableEnd()"><span style="font-size: small">End syll</span></span>
+key to force the interpretation you want.
+</p>
+<p>
+Thus, you could also enter <span class="k">하나</span> by clicking these keys:
+</p>
+<blockquote>
+<p>
+<span class="box" onclick="addLetter('ㅎ')">ㅎ</span>
+<span class="box" onclick="addLetter('ㅏ')">ㅏ</span>
+<span class="box" style="font-family: sans-serif;"
+        onclick="forceSyllableEnd()"><span style="font-size: small">End syll</span></span>
+<span class="box" onclick="addLetter('ㄴ')">ㄴ</span>
+<span class="box" onclick="addLetter('ㅏ')">ㅏ</span>
+</p>
+</blockquote>
+<p>
+<a href="javascript:history.back()">Back to exercise</a>
+</p>
+</body>
+</html>
+
+

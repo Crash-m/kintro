@@ -1,0 +1,91 @@
+/*********************************************************************
+    mixes up n elements of nArray starting at element startAt
+**********************************************************************/
+function shuffle( nArray, startAt, n )
+{
+    var i, j, swap;
+    
+    for (i = startAt; i < startAt + n; i++)
+    {
+        j = startAt + Math.round(Math.random() * (n - 1));
+        swap = nArray[i];
+        nArray[i] = nArray[j];
+        nArray[j] = swap;
+    }
+}
+
+var sinoOnes = new Array(
+    "",
+    "일",
+    "이",
+    "삼",
+    "사",
+    "오",
+    "육",
+    "칠",
+    "팔",
+    "구"
+);
+
+var powerStr = new Array(
+    "일",
+    "십",
+    "백",
+    "천",
+    "만"
+);
+
+var hour_onesplace = new Array(
+    "",
+    "한",
+    "두",
+    "세",
+    "네",
+    "다|섯",
+    "여|섯",
+    "일|곱",
+    "여|덟",
+    "아|홉"
+);
+
+var onesplace = new Array(
+    "",
+    "하|나",
+    "둘",
+    "셋",
+    "넷",
+    "다|섯",
+    "여|섯",
+    "일|곱",
+    "여|덟",
+    "아|홉"
+);
+
+var tensplace = new Array(
+    "",
+    "열",
+    "스|물",
+    "서|른",
+    "마|흔",
+    "쉰",
+    "예|순",
+    "일|흔",
+    "여|든",
+    "아|흔"
+);
+
+function setup()
+{
+    problemNumber = 0;
+    score = 0;
+    nTries = 0;
+    initialize();
+    congrats = new Array(
+        "Yes, that's it.",
+        "Quite right!",
+        "That's exactly it.",
+        "Very good.",
+        "You got it right.",
+        "Excellent.",
+        "Good work." );
+}

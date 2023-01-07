@@ -1,0 +1,28 @@
+할아버지
+어무니
+딸
+아들
+
+오빠
+형
+누나
+
+여동생
+남동생
+언니
+
+
+큰어머니 father's older married brother's wife
+큰아버지 father's older married brother
+삼촌 father's unmarried brother
+작은어머니 father's younger married brother
+작은아버지 father's younger married brother's wife
+고모부 father's sister
+고모 father's sister's husband
+
+외삼촌 mother's brother
+외숙모 mother's brother's wife
+이모 mother's sister
+이모부 mother's sister's husband
+
+너

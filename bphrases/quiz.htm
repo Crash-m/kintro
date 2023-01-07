@@ -1,0 +1,210 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" type="text/css" media="screen" href="../kstyle.css" />
+<link rel="stylesheet" type="text/css" media="print" href="../kprintstyle.css" />
+<title>Let’s Practice</title>
+<style type="text/css">
+.box {
+    border: 1px solid black;
+    padding: 5px;
+    cursor: default;
+}
+</style>
+<script type="text/javascript" src="../playsnd.v2.1.js">
+</script>
+
+<script type="text/javascript">
+<!--
+var phrases = new Array(
+    "안녕하세요?",
+    "안녕하세요?",
+    "어떻게 지내세요?",
+    "잘지내요.", 
+    "안녕히 계세요.",
+    "안녕히 가세요."
+);
+
+
+
+var soundNames = new Array(
+    "annyong", "annyong",
+    "howru", "finetnx",
+    "byestay", "byego"
+);
+
+var order = [0, 1, 2, 3, 4, 5]; // the order of the correct answers
+var occupied = [true, false, false, false, false, false]; // has this entry been chosen?
+var clickOrder = [0, 0, 0, 0, 0, 0]; // order in which student clicked boxes
+var stuOrder = [0, 0, 0, 0, 0, 0]
+var currEntry = 0;
+
+function createGame()
+{
+    var i,j,k;
+    
+    for (i=0; i<6; i++)
+    {
+        order[i] = i;
+        stuOrder[i] = 0;
+        occupied[i] = false;
+    }
+
+    /* shuffle */
+    for (i = 1; i < 6; i++)
+    {
+        j = Math.floor(Math.random() * 5) + 1;
+        k = order[i];
+        order[i] = order[j];
+        order[j] = k;
+    }
+    
+    occupied[0] = true;
+    document.getElementById("box0").innerText = "1";
+    currEntry = 1;
+    
+    for (i = 0; i < 6; i++) {
+        document.getElementById("phrase" + i).innerText = phrases[order[i]];
+        document.getElementById("check" + i).src = "../pics/mt.png";
+    }
+}
+
+function play(n) {
+    playSound("../snd/" + soundNames[order[n]]);
+}
+
+function setOrder(n)
+{
+    var i, str;
+    var img;
+    console.log('Click on', n);
+    if (!occupied[n])
+    {
+        clickOrder[currEntry] = n;
+        stuOrder[n] = currEntry;
+        document.getElementById("box" + n).innerText = currEntry + 1;
+        currEntry++;
+        occupied[n] = true;
+    }
+}
+
+function erase()
+{
+    var n;
+    var img;
+    if (currEntry > 1)
+    {
+        currEntry = currEntry - 1;
+        n = clickOrder[currEntry];
+        occupied[n] = false;
+        document.getElementById("box" + n).innerText = "\u2007";
+    }
+}
+
+function checkAnswers()
+{
+    var img;
+    for (i=1; i<6; i++)
+    {
+        img = document.getElementById( "check" + i );
+        if (stuOrder[i] == order[i])
+        {
+            img.src = "../pics/oksmall.png";
+        }
+        else
+        {
+            img.src = "../pics/badsmall.png";
+        }
+    }
+}
+// -->
+</script>
+</head>
+
+<body>
+<h1>Let’s Practice</h1>
+<noscript>
+<hr />
+You must have Javascript enabled in order for this page to work properly.
+<hr />
+</noscript>
+
+<form id="quizform" action="#">
+<p>
+You’ve just stopped by the store where your friend works. You greet her in Korean.
+</p>
+
+<p>
+Click the boxes at the left in the correct order that they should occur in the
+conversation. You can click a phrase to hear it spoken.
+</p>
+</form>
+
+<div>
+    <img src="../pics/mt.png" id="check0"/>
+    <span class="box" id="box0" onclick="setOrder(0)">&#x2007;</span>
+    <span class="k" id="phrase0" onclick="play(0)"></span>
+</div>
+<div>
+    <img src="../pics/mt.png" id="check1"/>
+    <span class="box" id="box1" onclick="setOrder(1)">&#x2007;</span>
+    <span class="k" id="phrase1" onclick="play(1)"></span>
+</div>
+<div>
+    <img src="../pics/mt.png" id="check2" />
+    <span class="box" id="box2" onclick="setOrder(2)">&#x2007;</span>
+    <span class="k" id="phrase2" onclick="play(2)"></span>
+</div>
+<div>
+    <img src="../pics/mt.png" id="check3" />
+    <span class="box" id="box3" onclick="setOrder(3)">&#x2007;</span>
+    <span class="k" id="phrase3" onclick="play(3)"></span>
+</div>
+<div>
+    <img src="../pics/mt.png" id="check4" />
+    <span class="box" id="box4" onclick="setOrder(4)">&#x2007;</span>
+    <span class="k" id="phrase4" onclick="play(4)"></span>
+</div>
+<div>
+    <img src="../pics/mt.png" id="check5" />
+    <span class="box" id="box5" onclick="setOrder(5)">&#x2007;</span>
+    <span class="k" id="phrase5" onclick="play(5)"></span>
+</div>
+
+<p>If you make a mistake, click
+<input type="button" id="backup" value="Erase" onclick="erase();" />.
+When you’re finished, click
+<input type="button" id="check" value="Check answers" onclick="checkAnswers();" />
+</p>
+
+<script type="text/javascript">
+createGame();
+</script>
+
+
+<!-- navigation -->
+<div id="bottom">
+
+<div id="left">
+<a href="parting.htm">
+<img src="../pics/l_arrow.png" width="16" height="11" class="noborder" alt="(back)" />Partings</a>
+</div>
+
+<div id="middle">
+<a href="toc.htm">
+<img src="../pics/up_arrow.png" class="noborder" width="26" height="11" alt="(Menu)" />Table of Contents</a>
+</div>
+
+<div id="right">
+<a href="social.htm">Polite Phrases <img src="../pics/r_arrow.png" class="noborder" width="16" height="11" alt="(next)" />
+</a>
+</div>
+
+</div>
+<!-- end navigation -->
+
+<audio id="sound" src="snd/silent.wav" /> 
+
+</body>
+</html>

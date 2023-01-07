@@ -1,0 +1,169 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" type="text/css" media="screen" href="../kstyle.css" />
+<link rel="stylesheet" type="text/css" media="print" href="../kprintstyle.css" />
+<script type="text/javascript" src="../driver.js"></script>
+<script type="text/javascript">
+// <![CDATA[
+var score;
+var userResponse;
+var nextPageHref;
+var alreadyAnswered;
+var correctChoice;
+var subOrder;
+
+var imgList = [
+        "book.jpg", "newsppr.jpg", "pencil.jpg", "pen.jpg",
+        "comb.jpg", "glasses.jpg", "key.jpg", "watch.jpg",
+        "house.jpg", "library.jpg", "postoff.jpg", "bakery.jpg",
+        "school.jpg", "bank.jpg", "glass.jpg", "plate.jpg",
+        "chopstk.jpg", "spoon.jpg", "kimchi.jpg", "kimbap.jpg"
+    ];
+    
+
+var korList = [
+        "책", "신문", "연필", "펜",
+        "머리 빗", "안경", "열쇠", "시계",
+        "집", "도서관", "우체국", "빵집",
+        "하꾜", "은행", "잔", "접시",
+        "젓가락", "숟가락", "김치", "김밥"
+    ];
+
+function setup() {
+    maxTries = 1;
+    maxProblem = korList.length;
+    setText("maxProb", maxProblem);
+    setupDriver();
+}
+
+function showProblem()
+{
+    var i;
+    
+    nTries = 0;
+    setText("feedback", "\u00a0");
+    setText("probNum", problemNumber + 1);
+    alreadyAnswered = false;
+    subOrder = [];
+    subOrder[0] = order[problemNumber];
+    for (i=0; i<maxProblem; i++)
+    {
+        if (i != subOrder[0])
+        {
+            subOrder.push(i);
+        }
+    }
+    shuffle(subOrder, 1, maxProblem-1);
+    shuffle(subOrder, 0, 3);
+
+    /* find out where the correct answer has been shuffled to */
+    i = 0;
+    while (i < 3 && subOrder[i] != order[problemNumber]) { i++; }
+    
+    correctChoice = i;
+    
+    document.getElementById("image").src =
+        "../vocimg/" + imgList[order[problemNumber]];
+
+    for (i=0; i<3; i++)
+    {
+        document.getElementById("word" + i).innerText = korList[subOrder[i]];
+    }
+}
+
+function judgeCorrect() {
+    return (userAnswer == correctChoice);
+}
+
+function giveFeedback()
+{
+    var i;
+    var doc;
+    var feedback;
+
+    if (alreadyAnswered)
+    {
+        setText("feedback",
+            "You already answered this question.");
+    }
+    else
+    {
+        alreadyAnswered = true;
+        if (correctAnswer)
+        {
+            setText("feedback", randomPositiveFeedback());
+            score++;
+            setText("score", score);
+        }
+        else
+        {
+            setText("feedback",
+                "The answer is " +
+                "ABCD"[correctChoice] + ".");
+        }
+    }
+}
+
+function nextProblem()
+{
+    problemNumber++;
+    if (problemNumber == maxProblem)
+    {
+        top.location.href = nextPageHref;
+    }
+    else
+    {
+        showProblem();
+    }
+}
+
+// ]]>
+</script>
+<title>Noun Practice 1</title>
+</head>
+
+<body onload="setup();">
+<noscript>
+<hr />
+<p>You must have Javascript enabled for this page to work properly.</p>
+<hr />
+</noscript>
+
+<div style="height: 200px;" class="floatleft"><img id="image" src="../pics/mt.png"/></div>
+
+<div>
+<input type="button" value=" A " onclick="userAnswer = 0; checkAnswer()" />
+<span id="word0" class="k"></span>
+</div>
+
+<div>
+<input type="button" value=" B " onclick="userAnswer = 1; checkAnswer()" />
+<span id="word1" class="k"></span>
+</div>
+
+<div>
+<input type="button" value=" C " onclick="userAnswer = 2; checkAnswer()" />
+<span id="word2" class="k"></span>
+</div>
+
+<div class="clearleft">
+<p>Click the button next to the correct choice above</p>
+<p id="feedback">&#160;</p>
+<p>
+Problem <span id="probNum">1</span> of
+    <span id="maxProb">0</span>.
+Your score: <span id="score">0</span>.
+</p>
+<p>
+<input type="button" id="next" value="Next Problem"
+    onclick="nextProblem()" />
+<input type="button" id="back" value="Vocabulary Index"
+    onclick="top.location.href='vocab.htm'" />
+</p>
+</div>
+
+</body>
+</html>

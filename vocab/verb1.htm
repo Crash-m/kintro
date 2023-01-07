@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" type="text/css" media="screen" href="../kstyle.css" />
+<link rel="stylesheet" type="text/css" media="print" href="../kprintstyle.css" />
+<title>Verbs of Intellectual Activity</title>
+<script type="text/javascript">
+// <![CDATA[
+var engWord = new Array
+(
+    "to teach",
+    "to learn",
+    "to study",
+    "to memorize",
+    "to read", 
+    "to write"
+);
+
+function setText(id, txt)
+{
+    document.getElementById(id).innerText = txt;
+}
+
+function display(n)
+{
+    setText("english", engWord[n]);
+}
+
+function undisplay()
+{
+    setText("english", "\u00a0");
+}
+// ]]>
+</script>
+</head>
+
+<body>
+
+<h1 class="center">Verbs of Intellectual Activity</h1>
+
+<noscript>
+<hr />
+<p>You must have Javascript enabled for this page to work properly.</p>
+<hr />
+</noscript>
+
+<p>
+Move your mouse over a Korean word to see its translation below.
+<br />
+<span class="k" id="v0" onmouseover="display(0);"
+    onmouseout="undisplay();">가르치다</span>
+<br />
+<span class="k" onmouseover="display(1);"
+    onmouseout="undisplay();">배우다</span>
+<br />
+<span class="k" onmouseover="display(2);"
+    onmouseout="undisplay();">공부하다</span>
+<br />
+<span class="k" onmouseover="display(3);"
+    onmouseout="undisplay();">외우다</span>
+<br />
+<span class="k" onmouseover="display(4);"
+    onmouseout="undisplay();">읽다</span>
+<br />
+<span class="k" onmouseover="display(5);"
+    onmouseout="undisplay();">쓰다</span>
+</p>
+
+<p class="bordered padded">Translation: <span id="english">&#160;</span></p>
+
+<!-- navigation -->
+<div id="bottom">
+
+<div id="left">
+<a href="vrbintro.htm"><img src="../pics/l_arrow.png" width="16" height="11" class="noborder" alt="(back)" />Introduction</a>
+</div>
+
+<div id="middle">
+<a href="vocab.htm"><img src="../pics/up_arrow.png" class="noborder" 
+    width="26" height="11" alt="(Menu)" />Vocabulary Index</a>
+</div>
+
+<div id="right">
+<a href="verb2.htm">Motion and Existence<img src="../pics/r_arrow.png" class="noborder" width="16" height="11" alt="(next)" /></a>
+</div>
+
+</div>
+<!-- end navigation -->
+
+</body>
+</html>

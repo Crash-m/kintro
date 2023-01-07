@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" type="text/css" media="screen" href="../kstyle.css" />
+<link rel="stylesheet" type="text/css" media="print" href="../kprintstyle.css" />
+
+<script type="text/javascript" src="numutil.js"></script>
+<script type="text/javascript">
+// <![CDATA[
+var order, maxProblem;
+var problemNumber;
+var revealed;
+var probType;
+var theNumber;
+
+function showNumber(whichDiv, n)
+{
+    document.getElementById(whichDiv).innerText = n;
+}
+
+function showKorean(whichDiv, n)
+{
+    var d;
+    var i, digit, pten;
+    var result;
+
+    d = document.getElementById(whichDiv);
+    result = "";
+    pten = 10000;
+    power = 4;
+    while (power >= 0)
+    {
+        digit = Math.floor(n / pten);
+        if (digit != 0)
+        {
+            if (digit > 1)
+            {
+                result += sinoOnes[digit];
+            }
+            if ((power > 0) || (power == 0 && digit == 1))
+            {
+                result += powerStr[power];
+            }
+            result += " ";
+        }
+        power--;
+        n %= pten;
+        pten /= 10;
+    }
+    d.innerText = result;
+}
+
+function goProblem()
+{
+    var n;
+    
+    revealed = false;
+    theNumber = Math.floor(Math.random() * 99999) + 1;
+    if (Math.random() > 0.200)
+    {
+        theNumber = (theNumber % 1000) + 1;
+    }
+    probType = (Math.floor(Math.random() * 10) >= 6) ? 1 : 0
+    if (probType == 0)
+    {
+        showNumber("question", theNumber);
+    }
+    else
+    {
+        showKorean("question", theNumber);
+    }
+    setText("card", problemNumber + 1);
+    setText("answer", "\u00a0");
+    if (problemNumber == maxProblem - 1)
+    {
+        document.getElementById("next").disabled = true;
+    }
+
+}
+
+function showAnswer()
+{
+
+    if (revealed)
+    {
+        return;
+    }
+
+    if (probType == 0)
+    {
+        showKorean("answer", theNumber);
+    }
+    else
+    {
+        showNumber("answer", theNumber);
+    }
+    revealed = true;
+}
+
+function initialize()
+{
+    var i;
+
+    problemNumber = 0;
+    maxProblem = 20;
+    nextPageHref = "numindex.htm";
+    setText("max", maxProblem);
+    goProblem();
+}
+// -->
+</script>
+<title>Sino-Korean Numbers Flash Cards</title>
+</head>
+
+<body onload="setup();">
+<div style="width: 50%; margin-left: auto; margin-right: auto;
+    padding:0.5em; border: 1px solid black">
+<div id="question" class="centered k">&nbsp;</div>
+
+<div id="answer" class="centered k">&nbsp;</div>
+<div>Card <span id="card">&#160;</span> of <span id="max">&#160;</span></div>
+</div>
+<noscript>
+<hr />
+<p>You must have JavaScript enabled for this page to work properly.</p>
+<hr />
+</noscript>
+<form name="infoForm">
+<p>
+See if you know the correct pure Korean numbers.
+<p>
+<input type="button" name="show" value="Show Answer"
+    onclick="showAnswer()" />
+<input type="button" name="next" value="Next Problem"
+    onclick="nextProblem()" />
+<input type="button" name="index" value="Back to Index"
+    onclick="top.location.href='numindex.htm'" />
+<p>
+</form>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<title>Family Quiz 2</title>
+<link rel="stylesheet" type="text/css" media="screen" href="../kstyle.css" />
+<link rel="stylesheet" type="text/css" media="print" href="../kprintstyle.css" />
+<script type="text/javascript" src="../driver.js"></script>
+<script type="text/javascript">
+// <![CDATA[
+var korean = [
+    "큰아버지",
+    "큰어머니",
+    "삼촌",
+    "작은아버지",
+    "작은어머니",
+    "고모",
+    "고모부",
+    "외삼촌",
+    "외숙모",
+    "이모",
+    "이모부"];
+
+
+var congrats = new Array(
+    "That's it.", "Correct.", "Right you are.", "Good work." 
+    );
+
+var MAXPROB = 11;
+var order = new Array( MAXPROB );
+var problem = -1;
+var nTries = 0;
+var clicked = -1;
+var correctChoice;
+
+function setupList()
+{
+    var i, j, k;
+    for (i=0; i<MAXPROB; i++)
+    {
+        order[i] = i;
+    }
+    shuffle(order, 0, MAXPROB);
+}   
+
+function nextProblem()
+{
+    var i, j, k;
+    var subord;
+
+    problem++;
+    if (problem >= MAXPROB)
+    {
+        top.location.href="famend.htm";
+    }
+    subord = new Array( MAXPROB );
+    
+    for (i=0; i < MAXPROB; i++)
+    {
+        subord[i] = i;
+    }
+    shuffle(subord, 0, MAXPROB);
+
+    // check to see if we've shuffled it into the first three already..
+    
+    correctChoice = -1;
+    for (i=0; i<3 && subord[i] != order[problem]; i++)
+    {
+        // loop is controlled by condition
+    }
+    correctChoice = i;
+    
+    // if not, plop it in somewhere
+    if (correctChoice == 3)
+    {
+        correctChoice = Math.floor( Math.random() * 3);
+        subord[correctChoice] = order[problem];
+    }
+    
+    document.getElementById("ck0").src = "../pics/mtsmall.png";
+    document.getElementById("ck1").src = "../pics/mtsmall.png";
+    document.getElementById("ck2").src = "../pics/mtsmall.png";
+    document.getElementById("word0").innerText = korean[subord[0]];
+    document.getElementById("word1").innerText = korean[subord[1]];
+    document.getElementById("word2").innerText = korean[subord[2]];
+    document.getElementById("item").innerText = order[problem] + 1;
+    clicked = -1;       
+}
+
+function checkAnswer( n )
+{
+    var str;
+    var pic;
+
+    if (clicked >= 0)
+    {
+        document.getElementById("ck" + clicked).src =
+            "../pics/mtsmall.png";
+    }
+    pic = document.getElementById("ck" + n );
+    str = "../pics/";
+    str +=  (n == correctChoice ) ? "oksmall.png" : "badsmall.png";
+    pic.src = str;
+    clicked = n;
+}
+// ]]>
+</script>
+</head>
+
+<body onload="setupList(); nextProblem()">
+<h2>Family Quiz 2</h2>
+<noscript>
+<hr />
+<p>You must have Javascript enabled for this page to work properly.</p>
+<hr />
+</noscript>
+<form id="quiz" action="#">
+<div style="margin-left: 2em">
+<object type="image/svg+xml" data="uncles_aunts_quiz.svg" id="diagram">
+  Diagram of uncles and aunts <!-- fallback image in CSS -->
+</object>
+
+<p>
+Choose the correct Korean word for relationship number
+<span id="item"></span>.
+</p>
+
+<p>
+<img id="ck0" src="../pics/mtsmall.png" width="24" height="24"
+    alt="" class="vmiddle" />
+<input type="button" value=" A " onclick="checkAnswer(0);" />
+<span id="word0" class="k">&#160;</span>
+
+<img id="ck1" src="../pics/mtsmall.png" width="24" height="24"
+    alt="" class="vmiddle" />
+<input type="button" value=" B " onclick="checkAnswer(1);" />
+<span id="word1" class="k">&#160;</span>
+
+<img id="ck2" src="../pics/mtsmall.png" width="24" height="24"
+    alt="" class="vmiddle" />
+<input type="button" value=" C " onclick="checkAnswer(2);" />
+<span id="word2" class="k">&#160;</span>
+</p>
+
+<p>
+<input type="button" value="Next Problem" onclick = "nextProblem();" />
+</p>
+
+</form>
+
+<!-- navigation -->
+<div id="bottom">
+
+<div id="left">
+<a href="ua_diagram.htm"><img src="../pics/l_arrow.png" width="16" height="11" class="noborder" alt="(back)" />Uncles and Aunts-The Big Picture</a>
+</div>
+
+<div id="middle">
+<a href="../index.htm"><img src="../pics/up_arrow.png" class="noborder" 
+    width="26" height="11" alt="(Menu)" />Main Index</a>
+</div>
+
+<div id="right">
+<a href="famend.htm">The Family Point System<img src="../pics/r_arrow.png" class="noborder" width="16" height="11" alt="(next)" /></a>
+</div>
+
+</div>
+<!-- end navigation -->
+
+</body>
+</html>

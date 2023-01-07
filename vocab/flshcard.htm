@@ -1,0 +1,329 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" type="text/css" media="screen" href="../kstyle.css" />
+<link rel="stylesheet" type="text/css" media="print" href="../kprintstyle.css" />
+<style type="text/css">
+
+div.kbd p {
+    margin: 10px;
+}
+
+.box {
+    font-family: UnDotum;
+    font-size: 125%;
+    border: 1px solid black;
+    padding: 2px;
+    cursor: default;
+}
+</style>
+
+<title>Vocabulary Flash Cards</title>
+
+<script type="text/javascript" src="flshlist.js"></script>
+<script type="text/javascript" src="../kinput.js"></script>
+<script type="text/javascript" src="../driver.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+
+var checked;
+var nTries = 0;
+var checked = true;
+var shownAnswer = false;
+
+var NOT_SEEN = 0;
+var ANSWERED_OK = 1;
+var MISSED_OR_SEEN = 2;
+var SKIPPED = 3;
+
+var itemStatus;
+
+function judgeCorrect()
+{
+    var student = document.getElementById("kinput").innerText.replace(/\s+/g, '');
+    var good = korean[order[problemNumber]].replace(/\s+/g, '');
+    return (student == good);
+}
+
+function giveFeedback()
+{
+
+    if (correctAnswer)
+    {
+        setText("feedback", randomPositiveFeedback());
+        itemStatus[order[problemNumber]] = ANSWERED_OK;
+        nTries++;
+    }
+    else
+    {
+        if (nTries <= maxTries)
+        {
+            setText("feedback", "Sorry, that's not it.");
+            itemStatus[order[problemNumber]] = MISSED_OR_SEEN;
+        }
+        else
+        {
+            setText("feedback", "Click “Show Answer” to see the right answer.");
+        }
+        nTries++;
+    }
+}
+
+function showProblem()
+{
+    resetInput();
+    setText("prob", problemNumber + 1);
+    setText("feedback", "\u00a0");
+    setText("kCorrect", "\u00a0");
+    setText("english", english[order[problemNumber]]);
+    document.getElementById("checkBtn").disabled = false;
+    document.getElementById("showBtn").disabled = false;
+    shownAnswer = false;
+    nTries = 0;
+}
+
+function showAnswer()
+{
+    console.log("Problem #", problemNumber, "order:", order[problemNumber],
+        "korean:", korean[order[problemNumber]],
+        "english:",  english[order[problemNumber]]);
+    itemStatus[order[problemNumber]] = MISSED_OR_SEEN;
+    setText("kCorrect", korean[order[problemNumber]]);
+    shownAnswer = true;
+    document.getElementById("checkBtn").disabled = true;
+    document.getElementById("showBtn").disabled = true;
+}
+
+function nextProblem()
+{
+    problemNumber++;
+    if (problemNumber >= maxProblem)
+    {
+        top.location.href = "flshend.htm";
+    }
+    else
+    {
+        showProblem();
+    }
+}
+
+function clearItemStatus() {
+    order = [];
+    status = [];
+    for (var i=0; i < maxProblem; i++)
+    {
+        order.push(i);
+        itemStatus.push(NOT_SEEN);
+    }
+}
+
+function initCards()
+{
+    var i;
+    var str;
+    var include = [true, true, true, true];
+
+    maxProblem = korean.length;
+    maxTries = true;
+    
+    /* figure out how many problems we have to do... */
+    str = location.search;
+
+    for (i = 0; i < 4; i++)
+    {
+        include[i] = (str.charAt(i+1) != "0");
+    }
+
+    order = [];
+    itemStatus = [];
+
+    if (!document.cookie)
+    {
+        clearItemStatus();
+    }
+    else
+    {
+        str = document.cookie;
+        console.log(str);
+        i = str.indexOf("fcard1=");
+        if (i < 0) {
+            clearItemStatus();
+        }
+        else
+        {
+            str = str.substring(i+7, i+132);
+
+            var nProblems = 0;
+            for (i = 0; i < maxProblem; i++)
+            {
+                itemStatus.push(parseInt(str.charAt(i), 10));
+                if (include[itemStatus[i]])
+                {
+                    console.log("include #", i, "as problem #", nProblems);
+                    order[nProblems] = i;
+                    nProblems++;
+                }
+            }
+            maxProblem = nProblems
+        }
+    }
+    
+    if (maxProblem == 0)
+    {
+        top.location.href = "nomatch.htm";
+    }
+
+    setText("maxProb", maxProblem);
+    
+    shuffle(order, 0, maxProblem);
+    setText("feedback", "\u00a0");
+    setText("kCorrect", "\u00a0");
+    
+    problemNumber = 0;
+    score = 0;
+    nTries = 0;
+
+    // do not call setupDriver(), as it screws up the problem ordering
+    showProblem();
+}
+
+function storeData()
+{
+    var str, i, delim;
+    var today = new Date();
+    
+    today.setYear(today.getFullYear() + 1);
+
+    str = "fcard1=";
+    
+    for (i = 0; i < maxProblem; i++)
+    {
+        str += itemStatus[i];
+    }
+    for (i = maxProblem; i < 125; i++)
+    {
+        str += "0";
+    }
+    
+    path = top.location.pathname;
+
+    delim = (path.lastIndexOf("\\") >= 0) ? "\\" : "/";
+    
+    i = path.lastIndexOf( delim );  // strip away the filename
+    path = path.substring(0, i);
+    i = path.lastIndexOf( delim );  // strip away folder name
+    if (i > 0)
+    {
+        path = path.substring(0, i);
+    }
+    console.log(str,today.toGMTString(), path);
+    document.cookie =
+        str +
+        ";expires=" + today.toGMTString() +
+        ";path=" + path;
+}
+// ]]>
+</script>
+</head>
+
+<body onload="initInput('', 'kinput', 10); initCards();" onunload="storeData();">
+<form id="quiz">
+<p>
+Enter the Korean for: <span id="english">&#160;</span>
+</p>
+<p>
+&#160;<span class="k" id="kinput">&#160;</span>
+</p>
+<p>
+&#160;<span class="k" id="kCorrect">&#160;</span>
+</p>
+
+<div class="kbd">
+<p>
+<span class="box" onclick="addLetter('ㄱ')">ㄱ</span><span
+    class="box" onclick="addLetter('ㄴ')">ㄴ</span><span
+    class="box" onclick="addLetter('ㄷ')">ㄷ</span><span
+    class="box" onclick="addLetter('ㄹ')">ㄹ</span><span
+    class="box" onclick="addLetter('ㅁ')">ㅁ</span><span
+    class="box" onclick="addLetter('ㅂ')">ㅂ</span><span
+    class="box" onclick="addLetter('ㅅ')">ㅅ</span><span
+    class="box" onclick="addLetter('ㅇ')">ㅇ</span><span
+    class="box" onclick="addLetter('ㅈ')">ㅈ</span><span
+    class="box" onclick="addLetter('ㅊ')">ㅊ</span><span
+    class="box" onclick="addLetter('ㅋ')">ㅋ</span><span
+    class="box" onclick="addLetter('ㅌ')">ㅌ</span><span
+    class="box" onclick="addLetter('ㅍ')">ㅍ</span><span
+    class="box" onclick="addLetter('ㅎ')">ㅎ</span><span
+    class="box" onclick="addLetter('ㄲ')">ㄲ</span><span
+    class="box" onclick="addLetter('ㄸ')">ㄸ</span><span
+    class="box" onclick="addLetter('ㅃ')">ㅃ</span><span
+    class="box" onclick="addLetter('ㅆ')">ㅆ</span><span
+    class="box" onclick="addLetter('ㅉ')">ㅉ</span>
+    </p>
+    
+    <p>
+    <span class="box" onclick="addLetter('ㄳ')">ㄳ</span><span
+    class="box" onclick="addLetter('ㄵ')">ㄵ</span><span
+    class="box" onclick="addLetter('ㄶ')">ㄶ</span><span
+    class="box" onclick="addLetter('ㄺ')">ㄺ</span><span
+    class="box" onclick="addLetter('ㄻ')">ㄻ</span><span
+    class="box" onclick="addLetter('ㄼ')">ㄼ</span><span
+    class="box" onclick="addLetter('ㄽ')">ㄽ</span><span
+    class="box" onclick="addLetter('ㄾ')">ㄾ</span><span
+    class="box" onclick="addLetter('ㄿ')">ㄿ</span><span
+    class="box" onclick="addLetter('ㅀ')">ㅀ</span><span
+    class="box" onclick="addLetter('ㅄ')">ㅄ</span>
+    &#160; &#160; <span
+    class="box" onclick="backspace()">&#8592;</span>
+    &#160;
+    <span class="box" style="font-family: sans-serif;"
+        onclick="addLetter(' ')"><span style="font-size:small">spacebar</span></span>
+    &#160;
+    <span class="box" style="font-family: sans-serif;"
+        onclick="forceSyllableEnd()"><span style="font-size: small">End syll</span></span>
+    <span class="box" style="font-family: sans-serif;"
+        onclick="resetInput()"><span style="font-size: small">Reset</span></span>
+    </p>
+    
+    <p>
+    <span class="box" onclick="addLetter('ㅏ')">ㅏ</span><span
+    class="box" onclick="addLetter('ㅑ')">ㅑ</span><span
+    class="box" onclick="addLetter('ㅓ')">ㅓ</span><span
+    class="box" onclick="addLetter('ㅕ')">ㅕ</span><span
+    class="box" onclick="addLetter('ㅗ')">ㅗ</span><span
+    class="box" onclick="addLetter('ㅛ')">ㅛ</span><span
+    class="box" onclick="addLetter('ㅜ')">ㅜ</span><span
+    class="box" onclick="addLetter('ㅠ')">ㅠ</span><span
+    class="box" onclick="addLetter('ㅡ')">ㅡ</span><span
+    class="box" onclick="addLetter('ㅣ')">ㅣ</span><span
+    class="box" onclick="addLetter('ㅐ')">ㅐ</span><span
+    class="box" onclick="addLetter('ㅒ')">ㅒ</span><span
+    class="box" onclick="addLetter('ㅔ')">ㅔ</span><span
+    class="box" onclick="addLetter('ㅖ')">ㅖ</span><span
+    class="box" onclick="addLetter('ㅘ')">ㅘ</span><span
+    class="box" onclick="addLetter('ㅙ')">ㅙ</span><span
+    class="box" onclick="addLetter('ㅚ')">ㅚ</span><span
+    class="box" onclick="addLetter('ㅝ')">ㅝ</span><span
+    class="box" onclick="addLetter('ㅞ')">ㅞ</span><span
+    class="box" onclick="addLetter('ㅟ')">ㅟ</span><span
+    class="box" onclick="addLetter('ㅢ')">ㅢ</span>
+    </p>
+</div>
+
+<p>
+Results: <span id="feedback">&#160;</span>
+<br />
+Problem <span id="prob">&#160;</span> of
+<span id="maxProb">&#160;</span>
+<br />
+<input type="button" id="checkBtn" value="Check Answer" onClick="checkAnswer();">
+<input type="button" id="showBtn" value="Show Answer" onClick="showAnswer();">
+<input type="button" id="nextBtn" value="Next Problem" onClick="nextProblem();">
+<input type="button" value="Exit" onclick="top.location.href='flshend.htm';">
+</p>
+
+
+</body>
+</html>
